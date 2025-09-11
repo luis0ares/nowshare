@@ -46,4 +46,4 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker service update --image ${{ secrets.DOCKER_HUB_USER }}/${{ vars.IMAGE_NAME_FRONTEND }}:latest ${{ vars.SWARM_SERVICE_NAME }} --force
+            docker service update --image ${{ secrets.DOCKER_HUB_USER }}/${{ vars.IMAGE_NAME_FRONTEND }}:latest ${{ vars.SWARM_FRONTEND_SERVICE_NAME }} --force
