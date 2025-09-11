@@ -39,6 +39,11 @@ jobs:
           build-args: |
             API_BASE_URL=${{ vars.API_BASE_URL }}
 
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@master
         with:
