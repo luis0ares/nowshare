@@ -3,7 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config.middleware import register_middleware
 from app.config.settings import envs
-from app.handlers import register_handlers
+from app.presentation.handlers import register_handlers
+
+from app.presentation.api.oauth import auth_router
 
 app = FastAPI(
     title="NowShare API",
@@ -30,3 +32,5 @@ app.add_middleware(
 register_middleware(app)
 # Register exception handlers
 register_handlers(app)
+# REST Routes
+app.include_router(auth_router)

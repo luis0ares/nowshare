@@ -30,5 +30,15 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     DATABASE_ECHO: bool = False
 
+    JWT_ALGORITHM: str = 'HS256'
+    JWT_SECRET: str = 'my-jwt-secret'
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+
+    GITHUB_CLIENT_ID: str
+    GITHUB_CLIENT_SECRET: str
+    GITHUB_REDIRECT_URI: str
+    LOGGED_REDIRECT: str = '/'
+
 
 envs = Settings()
