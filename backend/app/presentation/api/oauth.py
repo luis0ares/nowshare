@@ -27,11 +27,33 @@ async def github_oauth_callback(response: Response, code: str,
     """
     GitHub OAuth callback route. Processes the received authorization 
     code, authenticates the user, sets authentication cookies with the 
-    httponly flag, and redirects to the URL configured in the 
+    **httponly** flag, and redirects to the URL configured in the 
     **LOGGED_REDIRECT** environment variable.
     """
     use_case = GithubCallbackUseCase(response, user_repository)
-    return await use_case.execute(code)
+    tokens = await use_case.execute(code)
+
+    response = RedirectResponse(envs.LOGGED_REDIRECT)
+    response.set_cookie(
+        key="__access",
+        value=tokens.access,
+        httponly=True,
+        secure=envs.C00KIES_SECURE,
+        samesite="lax"
+    )
+    response.set_cookie(
+        key="__refresh",
+        value=tokens.refresh,
+        httponly=True,
+        secure=envs.C00KIES_SECURE,
+        samesite="lax"
+    )
+    return response
 
 
-
+@auth_router.get("/logout")
+def logout(response: Response):
+    '''Removes the **httponly** tokens.'''
+    response.delete_cookie("__access")
+    response.delete_cookie("__refresh")
+    return

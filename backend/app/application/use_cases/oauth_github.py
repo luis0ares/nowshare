@@ -1,6 +1,4 @@
-from fastapi import Response
 from typing import TypedDict
-from fastapi.responses import RedirectResponse
 from httpx import AsyncClient
 
 from app.config.settings import envs
@@ -16,9 +14,8 @@ class GithubUser(TypedDict):
 
 
 class GithubCallbackUseCase:
-    def __init__(self, response: Response, user_repository: UserRepository):
+    def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
-        self.response = response
 
     async def _get_user_data(self, code: str) -> GithubUser:
         async with AsyncClient() as client:
@@ -49,25 +46,5 @@ class GithubCallbackUseCase:
         )
         user = await self.user_repository.create_or_update(user)
 
-        jwt = create_tokens(user.sub)
+        return create_tokens(user.sub)
         
-        self.response = RedirectResponse(envs.LOGGED_REDIRECT)
-        self.response.set_cookie(
-            key="__access",
-            value=jwt.access,
-            httponly=True,
-            secure=False,   # ⚠️ em produção use True (https)
-            samesite="lax"
-        )
-        self.response.set_cookie(
-            key="__refresh",
-            value=jwt.refresh,
-            httponly=True,
-            secure=False,
-            samesite="lax"
-        )
-        return self.response
-        # return {
-        #     "access": jwt.access,
-        #     "refresh": jwt.refresh,
-        # }

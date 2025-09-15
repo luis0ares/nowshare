@@ -16,6 +16,8 @@ app = FastAPI(
         "url": "https://www.linkedin.com/in/luis0ares",
         "email": "luisedu.soares@outlook.com"
     },
+    docs_url=None,
+    redoc_url='/docs',
     root_path=envs.API_PREFIX,
 )
 
