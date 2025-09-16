@@ -4,8 +4,8 @@ from starlette.responses import RedirectResponse
 from app.application.use_cases.oauth_github import GithubCallbackUseCase
 from app.application.use_cases.refresh_token import RefreshTokenUseCase
 from app.config.settings import envs
-from app.presentation.api.schemas import Generic, UserData
-from app.presentation.dependencies import CurrentUser, UserRepository
+from app.presentation.api.schemas import Generic
+from app.presentation.dependencies import UserRepository
 
 
 auth_router = APIRouter(prefix="/auth", tags=["OAuth"])
@@ -84,10 +84,3 @@ def logout(response: Response):
     return Generic(detail="Logged out")
 
 
-@auth_router.get("/me", response_model=UserData)
-def get_me(current_user: CurrentUser):
-    return UserData(
-        id=str(current_user.id),
-        username=current_user.username,
-        avatar_url=current_user.avatar_url
-    )
