@@ -1,7 +1,8 @@
-import jwt
-from datetime import datetime, timedelta, timezone
 from dataclasses import dataclass
-from typing import TypedDict, Literal
+from datetime import datetime, timedelta, timezone
+from typing import Literal, TypedDict
+
+import jwt
 
 from app.config.settings import envs
 

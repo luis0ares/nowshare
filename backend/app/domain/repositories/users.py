@@ -2,9 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import ResourseNotFound
+from app.domain.dto.user import UserCreateUpdateDTO, UserDTO
 from app.domain.models import User
-from app.domain.dto.user import UserDTO
-from app.domain.dto.user import UserCreateUpdateDTO
 
 
 class UserRepository:

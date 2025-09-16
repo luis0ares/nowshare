@@ -8,7 +8,6 @@ from app.config.db import get_session
 from app.domain.dto.user import UserDTO
 from app.domain.repositories import users
 
-
 DbSession = Annotated[AsyncSession, Depends(get_session)]
 
 
@@ -24,5 +23,6 @@ async def get_current_user(
     access_token = request.cookies.get("__access")
     use_case = GetMeUseCase(user_repository)
     return await use_case.execute(access_token)
+
 
 CurrentUser = Annotated[UserDTO, Depends(get_current_user)]

@@ -7,14 +7,13 @@ from app.config.settings import envs
 from app.presentation.api.schemas import Generic
 from app.presentation.dependencies import UserRepository
 
-
 auth_router = APIRouter(prefix="/auth", tags=["OAuth"])
 
 
 @auth_router.get("/github/login")
 async def github_oauth_redirect():
     """
-    Redirects the user to the GitHub login page, initiating the OAuth 
+    Redirects the user to the GitHub login page, initiating the OAuth
     authentication flow.
     """
     URL = 'https://github.com/login/oauth/authorize?scope=user:email&' + \
@@ -27,9 +26,9 @@ async def github_oauth_redirect():
 async def github_oauth_callback(response: Response, code: str,
                                 user_repository: UserRepository):
     """
-    GitHub OAuth callback route. Processes the received authorization 
-    code, authenticates the user, sets authentication cookies with the 
-    **httponly** flag, and redirects to the URL configured in the 
+    GitHub OAuth callback route. Processes the received authorization
+    code, authenticates the user, sets authentication cookies with the
+    **httponly** flag, and redirects to the URL configured in the
     **LOGGED_REDIRECT** environment variable.
     """
     use_case = GithubCallbackUseCase(user_repository)
@@ -82,5 +81,3 @@ def logout(response: Response):
     response.delete_cookie("__access")
     response.delete_cookie("__refresh")
     return Generic(detail="Logged out")
-
-

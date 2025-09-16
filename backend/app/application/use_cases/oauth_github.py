@@ -1,4 +1,5 @@
 from typing import TypedDict
+
 from httpx import AsyncClient
 
 from app.config.settings import envs
@@ -35,7 +36,7 @@ class GithubCallbackUseCase:
                 headers={"Authorization": f"Bearer {access_token}"}
             )
             return user_resp.json()
-    
+
     async def execute(self, code: str):
         github_user = await self._get_user_data(code)
 
@@ -47,4 +48,3 @@ class GithubCallbackUseCase:
         user = await self.user_repository.create_or_update(user)
 
         return create_tokens(user.sub)
-        
