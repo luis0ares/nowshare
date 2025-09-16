@@ -2,9 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import ResourseNotFound
-from app.db.models import Article
-from app.modules.articles.dto import ArticleDTO
-from app.modules.articles.dto import ArticleCreateDTO
+from app.domain.dto.article import ArticleCreateDTO, ArticleDTO
+from app.domain.models import Article
 
 
 class ArticleRepository:

@@ -2,9 +2,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import ResourseNotFound
-from app.db.models import Comment
-from app.modules.comments.dto import CommentDTO
-from app.modules.comments.dto import CommentCreateDTO
+from app.domain.dto.comment import CommentCreateDTO, CommentDTO
+from app.domain.models import Comment
 
 
 class CommentRepository:

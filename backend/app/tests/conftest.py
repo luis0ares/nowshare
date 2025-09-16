@@ -7,8 +7,8 @@ from sqlalchemy.ext.asyncio import (
 )
 from testcontainers.postgres import PostgresContainer
 
-from app.infrastructure.db.database import get_session
-from app.infrastructure.db.models import Base
+from app.config.db import get_session
+from app.domain.models import Base
 from app.main import app as main_app
 
 

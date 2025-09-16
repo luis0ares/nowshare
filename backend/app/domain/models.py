@@ -4,7 +4,7 @@ from typing import List, Optional
 from sqlalchemy import BigInteger, ForeignKey, String, Text, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-from app.db.database import generate_snowflake_id
+from app.config.db import generate_snowflake_id
 
 
 class BaseMixin:
@@ -38,6 +38,7 @@ class User(BaseMixin, Base):
 
     # Relationships
     articles: Mapped[List["Article"]] = relationship(back_populates="author")
+    comments: Mapped[List["Comment"]] = relationship(back_populates="author")
 
 
 class Article(BaseMixin, Base):
