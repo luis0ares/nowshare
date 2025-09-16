@@ -18,6 +18,7 @@ class UserRepository:
 
         try:
             if existing_user:
+                existing_user.sub = user.sub
                 existing_user.username = user.username
                 existing_user.avatar_url = user.avatar_url
                 await self.session.commit()
@@ -37,12 +38,12 @@ class UserRepository:
             await self.session.rollback()
             raise err
 
-    async def get_user_by_sub(self, user_sub: int) -> UserDTO | None:
+    async def get_user_by_sub(self, user_sub: str) -> UserDTO | None:
         """Get user by sub."""
         user = await self.session.scalar(
             select(User).where(User.sub == user_sub))
 
-        if user:
+        if not user:
             raise ResourseNotFound(f'User with sub {user_sub} not found')
         return UserDTO(
             id=user.id,

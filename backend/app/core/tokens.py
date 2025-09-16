@@ -1,6 +1,7 @@
 import jwt
 from datetime import datetime, timedelta, timezone
 from dataclasses import dataclass
+from typing import TypedDict, Literal
 
 from app.config.settings import envs
 
@@ -9,6 +10,11 @@ from app.config.settings import envs
 class ApiTokens:
     access: str
     refresh: str
+
+
+class TokenPayload(TypedDict):
+    sub: str
+    type: Literal['access', 'refresh']
 
 
 def create_tokens(sub: str):
@@ -31,3 +37,7 @@ def create_tokens(sub: str):
         refresh_payload, envs.JWT_SECRET, algorithm=envs.JWT_ALGORITHM)
 
     return ApiTokens(access=access_token, refresh=refresh_token)
+
+
+def decode_token(token: str) -> TokenPayload:
+    return jwt.decode(token, envs.JWT_SECRET, algorithms=[envs.JWT_ALGORITHM])

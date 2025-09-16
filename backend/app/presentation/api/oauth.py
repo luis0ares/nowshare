@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Request, Response
 from starlette.responses import RedirectResponse
 
 from app.application.use_cases.oauth_github import GithubCallbackUseCase
+from app.application.use_cases.refresh_token import RefreshTokenUseCase
 from app.config.settings import envs
-from app.presentation.dependencies import UserRepository
+from app.presentation.api.schemas import Generic, UserData
+from app.presentation.dependencies import CurrentUser, UserRepository
 
 
 auth_router = APIRouter(prefix="/auth", tags=["OAuth"])
@@ -30,7 +32,7 @@ async def github_oauth_callback(response: Response, code: str,
     **httponly** flag, and redirects to the URL configured in the 
     **LOGGED_REDIRECT** environment variable.
     """
-    use_case = GithubCallbackUseCase(response, user_repository)
+    use_case = GithubCallbackUseCase(user_repository)
     tokens = await use_case.execute(code)
 
     response = RedirectResponse(envs.LOGGED_REDIRECT)
@@ -51,9 +53,41 @@ async def github_oauth_callback(response: Response, code: str,
     return response
 
 
-@auth_router.get("/logout")
+@auth_router.get("/refresh", response_model=Generic)
+def refresh_access_token(request: Request, response: Response):
+    refresh_token = request.cookies.get("__refresh")
+    use_case = RefreshTokenUseCase()
+    tokens = use_case.execute(refresh_token)
+
+    response.set_cookie(
+        key="__access",
+        value=tokens.access,
+        httponly=True,
+        secure=envs.C00KIES_SECURE,
+        samesite="lax"
+    )
+    response.set_cookie(
+        key="__refresh",
+        value=tokens.refresh,
+        httponly=True,
+        secure=envs.C00KIES_SECURE,
+        samesite="lax"
+    )
+    return Generic(detail="Tokens refreshed")
+
+
+@auth_router.get("/logout", response_model=Generic)
 def logout(response: Response):
     '''Removes the **httponly** tokens.'''
     response.delete_cookie("__access")
     response.delete_cookie("__refresh")
-    return
+    return Generic(detail="Logged out")
+
+
+@auth_router.get("/me", response_model=UserData)
+def get_me(current_user: CurrentUser):
+    return UserData(
+        id=str(current_user.id),
+        username=current_user.username,
+        avatar_url=current_user.avatar_url
+    )
