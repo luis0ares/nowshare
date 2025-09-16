@@ -4,7 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config.middleware import register_middleware
 from app.config.settings import envs
 from app.presentation.api.oauth import auth_router
+from app.presentation.graphql.schemas import graphql_app
 from app.presentation.handlers import register_handlers
+
 
 app = FastAPI(
     title="NowShare API",
@@ -35,3 +37,5 @@ register_middleware(app)
 register_handlers(app)
 # REST Routes
 app.include_router(auth_router)
+# Graphql Route
+app.include_router(graphql_app)
