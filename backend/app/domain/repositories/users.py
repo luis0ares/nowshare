@@ -52,3 +52,19 @@ class UserRepository:
             created_at=user.created_at,
             updated_at=user.updated_at
         )
+
+    async def get_user_by_id(self, user_id: int) -> UserDTO | None:
+        """Get user by id."""
+        user = await self.session.scalar(
+            select(User).where(User.id == user_id))
+
+        if not user:
+            raise ResourseNotFound(f'User with id {user_id} not found')
+        return UserDTO(
+            id=user.id,
+            sub=user.sub,
+            username=user.username,
+            avatar_url=user.avatar_url,
+            created_at=user.created_at,
+            updated_at=user.updated_at
+        )

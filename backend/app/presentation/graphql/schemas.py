@@ -1,12 +1,14 @@
 import strawberry
 from datetime import datetime
 from strawberry.fastapi import GraphQLRouter
-from strawberry.types import Info
 from typing import List
 
+from app.application.services.article import ArticleService
+from app.application.use_cases.get_author import GetAuthorByIdUseCase
 from app.domain.dto.article import ArticleDTO
-from app.domain.dto.user import UserDTO
-from app.presentation.dependencies import CurrentUser
+from app.domain.repositories.articles import ArticleRepository
+from app.domain.repositories.users import UserRepository
+from app.presentation.graphql.context import TypedInfo, get_context, get_current_user
 
 
 @strawberry.type
@@ -28,7 +30,16 @@ class ArticleType:
     id: str
     title: str
     content: str
-    author: UserType
+    author_id: str
+    created_at: datetime
+    updated_at: datetime | None
+
+    @strawberry.field
+    async def author(self, info: TypedInfo) -> UserType:
+        user_repository = UserRepository(info.context['db_session'])
+        use_case = GetAuthorByIdUseCase(user_repository)
+        return await use_case.execute(int(self.author_id))
+
     # comments: List[CommentType]
 
 
@@ -36,22 +47,23 @@ class ArticleType:
 @strawberry.type
 class Query:
     @strawberry.field
-    async def me(self, info: Info) -> UserType:
-        user_data: UserDTO = info.context["current_user"]
+    async def me(self, info: TypedInfo) -> UserType:
+        user_data = await get_current_user(info.context)
         return user_data
 
     @strawberry.field
-    async def articles(self, info: Info) -> List[ArticleType]:
-        return [
-            ArticleDTO(
-                id=123,
-                title='title',
-                content='content',
-                author_id=123,
-                created_at=datetime.now(),
-                updated_at=datetime.now()
-            )
-        ]
+    async def article(self, info: TypedInfo, id: str) -> ArticleType:
+        article_repository = ArticleRepository(info.context['db_session'])
+        service = ArticleService(article_repository)
+        return await service.get_article(int(id))
+
+    @strawberry.field
+    async def articles(self, info: TypedInfo,
+                       author_id: str | None = None) -> List[ArticleType]:
+        author_id = int(author_id) if author_id is not None else None
+        article_repository = ArticleRepository(info.context['db_session'])
+        service = ArticleService(article_repository)
+        return await service.get_articles(author_id)
 
 
 # Mutations
@@ -59,23 +71,47 @@ class Query:
 class Mutation:
     @strawberry.mutation
     async def create_article(
-            self, title: str, content: str, info: Info) -> ArticleType:
-        user_data: UserDTO = info.context["current_user"]
-        article = ArticleDTO(
-            id=123,
+            self, title: str, content: str, info: TypedInfo) -> ArticleType:
+        user_data = await get_current_user(info.context)
+        article_repository = ArticleRepository(info.context['db_session'])
+
+        service = ArticleService(article_repository)
+        article = await service.create_article(
             title=title,
             content=content,
-            author_id=user_data.id,
-            created_at=datetime.now(),
-            updated_at=datetime.now()
+            author_id=user_data.id
         )
         return article
 
+    @strawberry.mutation
+    async def update_article(self, article_id: str, title: str, content: str,
+                             info: TypedInfo) -> ArticleType:
+        author = await get_current_user(info.context)
+        article_repository = ArticleRepository(info.context['db_session'])
 
-async def get_context_dependency(current_user: CurrentUser):
-    return {"current_user": current_user}
+        service = ArticleService(article_repository)
+        article = await service.update_article(
+            author_id=author.id,
+            article_id=int(article_id),
+            title=title,
+            content=content
+        )
+        return article
+
+    @strawberry.mutation
+    async def delete_article(
+            self, article_id: str, info: TypedInfo) -> None:
+        author = await get_current_user(info.context)
+        article_repository = ArticleRepository(info.context['db_session'])
+
+        service = ArticleService(article_repository)
+        await service.delete_article(
+            author_id=author.id,
+            article_id=int(article_id)
+        )
+
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 graphql_app = GraphQLRouter(
-    schema, context_getter=get_context_dependency,
+    schema, context_getter=get_context,
     graphql_ide="apollo-sandbox", path="/graphql", tags=["Graphql"])

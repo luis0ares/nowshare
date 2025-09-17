@@ -4,8 +4,9 @@ from starlette.responses import RedirectResponse
 from app.application.use_cases.oauth_github import GithubCallbackUseCase
 from app.application.use_cases.refresh_token import RefreshTokenUseCase
 from app.config.settings import envs
+from app.domain.repositories.users import UserRepository
 from app.presentation.api.schemas import Generic
-from app.presentation.dependencies import UserRepository
+from app.presentation.dependencies import DbSession
 
 auth_router = APIRouter(prefix="/auth", tags=["OAuth"])
 
@@ -24,13 +25,14 @@ async def github_oauth_redirect():
 
 @auth_router.get("/github/callback")
 async def github_oauth_callback(response: Response, code: str,
-                                user_repository: UserRepository):
+                                db_session: DbSession):
     """
     GitHub OAuth callback route. Processes the received authorization
     code, authenticates the user, sets authentication cookies with the
     **httponly** flag, and redirects to the URL configured in the
     **LOGGED_REDIRECT** environment variable.
     """
+    user_repository = UserRepository(db_session)
     use_case = GithubCallbackUseCase(user_repository)
     tokens = await use_case.execute(code)
 
