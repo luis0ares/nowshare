@@ -1,10 +1,11 @@
 """'Database models'
 
 Revision ID: 570d8d5d307c
-Revises: 
+Revises:
 Create Date: 2025-09-10 20:53:32.198147
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -31,7 +32,7 @@ def upgrade() -> None:
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint('id'),
         sa.UniqueConstraint('sub'),
-        sa.UniqueConstraint('username')
+        sa.UniqueConstraint('username'),
     )
     op.create_table(
         'articles',
@@ -42,8 +43,9 @@ def upgrade() -> None:
         sa.Column('created_at', sa.DateTime(), nullable=False),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.ForeignKeyConstraint(
-            ['author_id'], ['users.id'], "fk_articles_author_id"),
-        sa.PrimaryKeyConstraint('id')
+            ['author_id'], ['users.id'], 'fk_articles_author_id'
+        ),
+        sa.PrimaryKeyConstraint('id'),
     )
     op.create_table(
         'comments',
@@ -54,10 +56,12 @@ def upgrade() -> None:
         sa.Column('created_at', sa.DateTime(), nullable=False),
         sa.Column('updated_at', sa.DateTime(), nullable=True),
         sa.ForeignKeyConstraint(
-            ['article_id'], ['articles.id'], "fk_comments_article_id"),
+            ['article_id'], ['articles.id'], 'fk_comments_article_id'
+        ),
         sa.ForeignKeyConstraint(
-            ['author_id'], ['users.id'], "fk_comments_author_id"),
-        sa.PrimaryKeyConstraint('id')
+            ['author_id'], ['users.id'], 'fk_comments_author_id'
+        ),
+        sa.PrimaryKeyConstraint('id'),
     )
     # ### end Alembic commands ###
 

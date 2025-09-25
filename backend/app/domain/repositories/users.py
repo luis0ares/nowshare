@@ -13,7 +13,8 @@ class UserRepository:
     async def create_or_update(self, user: UserCreateUpdateDTO):
         """Create or update user."""
         existing_user = await self.session.scalar(
-            select(User).where(User.sub == user.sub))
+            select(User).where(User.sub == user.sub)
+        )
 
         try:
             if existing_user:
@@ -27,7 +28,7 @@ class UserRepository:
             user_db = User(
                 sub=user.sub,
                 username=user.username,
-                avatar_url=user.avatar_url
+                avatar_url=user.avatar_url,
             )
             self.session.add(user_db)
             await self.session.commit()
@@ -40,7 +41,8 @@ class UserRepository:
     async def get_user_by_sub(self, user_sub: str) -> UserDTO | None:
         """Get user by sub."""
         user = await self.session.scalar(
-            select(User).where(User.sub == user_sub))
+            select(User).where(User.sub == user_sub)
+        )
 
         if not user:
             raise ResourseNotFound(f'User with sub {user_sub} not found')
@@ -50,13 +52,14 @@ class UserRepository:
             username=user.username,
             avatar_url=user.avatar_url,
             created_at=user.created_at,
-            updated_at=user.updated_at
+            updated_at=user.updated_at,
         )
 
     async def get_user_by_id(self, user_id: int) -> UserDTO | None:
         """Get user by id."""
         user = await self.session.scalar(
-            select(User).where(User.id == user_id))
+            select(User).where(User.id == user_id)
+        )
 
         if not user:
             raise ResourseNotFound(f'User with id {user_id} not found')
@@ -66,5 +69,5 @@ class UserRepository:
             username=user.username,
             avatar_url=user.avatar_url,
             created_at=user.created_at,
-            updated_at=user.updated_at
+            updated_at=user.updated_at,
         )

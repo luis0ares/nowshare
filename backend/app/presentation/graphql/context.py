@@ -19,14 +19,11 @@ TypedInfo = Info[Context, Any]
 
 
 def get_context(request: Request, session: DbSession) -> Context:
-    return Context(
-        request=request,
-        db_session=session
-    )
+    return Context(request=request, db_session=session)
 
 
 async def get_current_user(context: Context) -> UserDTO:
-    access_token = context["request"].cookies.get("__access")
+    access_token = context['request'].cookies.get('__access')
     user_repository = UserRepository(context['db_session'])
 
     use_case = GetMeUseCase(user_repository)

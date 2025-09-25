@@ -2,7 +2,11 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import ResourseNotFound
-from app.domain.dto.article import ArticleCreateDTO, ArticleDTO, ArticleUpdateDTO
+from app.domain.dto.article import (
+    ArticleCreateDTO,
+    ArticleDTO,
+    ArticleUpdateDTO,
+)
 from app.domain.models import Article
 
 
@@ -15,7 +19,7 @@ class ArticleRepository:
         article: Article = Article(
             title=article.title,
             content=article.content,
-            author_id=article.author_id
+            author_id=article.author_id,
         )
         try:
             self.session.add(article)
@@ -27,21 +31,24 @@ class ArticleRepository:
                 content=article.content,
                 author_id=article.author_id,
                 created_at=article.created_at,
-                updated_at=article.updated_at
+                updated_at=article.updated_at,
             )
         except Exception as e:
             await self.session.rollback()
             raise e
 
-    async def update(self, author_id: int, article_id: int, 
-                     article: ArticleUpdateDTO):
+    async def update(
+        self, author_id: int, article_id: int, article: ArticleUpdateDTO
+    ):
         """Update existing article."""
         db_article = await self.session.scalar(
-            select(Article).where(Article.id == article_id))
+            select(Article).where(Article.id == article_id)
+        )
 
         if db_article is None or db_article.author_id != author_id:
             raise ResourseNotFound(
-                f'Article with id {article_id} not found for this user')
+                f'Article with id {article_id} not found for this user'
+            )
 
         db_article.title = article.title
         db_article.content = article.content
@@ -56,7 +63,7 @@ class ArticleRepository:
                 content=db_article.content,
                 author_id=db_article.author_id,
                 created_at=db_article.created_at,
-                updated_at=db_article.updated_at
+                updated_at=db_article.updated_at,
             )
         except Exception as e:
             await self.session.rollback()
@@ -65,16 +72,18 @@ class ArticleRepository:
     async def delete(self, author_id: int, article_id: int):
         """Delete existing article."""
         db_article = await self.session.scalar(
-            select(Article).where(Article.id == article_id))
+            select(Article).where(Article.id == article_id)
+        )
 
         if db_article is None or db_article.author_id != author_id:
             raise ResourseNotFound(
-                f'Article with id {article_id} not found for this user')
+                f'Article with id {article_id} not found for this user'
+            )
 
         try:
             await self.session.delete(db_article)
             await self.session.commit()
-            return 
+            return
         except Exception as e:
             await self.session.rollback()
             raise e
@@ -82,18 +91,18 @@ class ArticleRepository:
     async def get_by_id(self, article_id: int) -> ArticleDTO:
         """Get article by id."""
         article = await self.session.scalar(
-            select(Article).where(Article.id == article_id))
+            select(Article).where(Article.id == article_id)
+        )
 
         if article is None:
-            raise ResourseNotFound(
-                f'Article with id {article_id} not found')
+            raise ResourseNotFound(f'Article with id {article_id} not found')
         return ArticleDTO(
             id=article.id,
             title=article.title,
             content=article.content,
             author_id=article.author_id,
             created_at=article.created_at,
-            updated_at=article.updated_at
+            updated_at=article.updated_at,
         )
 
     async def get_all(self, author_id: int | None = None):
@@ -110,6 +119,7 @@ class ArticleRepository:
                 content=article.content,
                 author_id=article.author_id,
                 created_at=article.created_at,
-                updated_at=article.updated_at
-            ) for article in articles
+                updated_at=article.updated_at,
+            )
+            for article in articles
         ]
