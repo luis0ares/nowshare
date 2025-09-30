@@ -86,3 +86,22 @@ class CommentRepository:
         except Exception as e:
             await self.session.rollback()
             raise e
+
+    async def delete(self, author_id: int, comment_id: int):
+        """Delete existing article."""
+        db_comment = await self.session.scalar(
+            select(Comment).where(Comment.id == comment_id)
+        )
+
+        if db_comment is None or db_comment.author_id != author_id:
+            raise ResourseNotFound(
+                f'Comment with id {comment_id} not found for this user'
+            )
+
+        try:
+            await self.session.delete(db_comment)
+            await self.session.commit()
+            return
+        except Exception as e:
+            await self.session.rollback()
+            raise e

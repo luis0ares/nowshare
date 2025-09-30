@@ -133,7 +133,7 @@ class Mutation:
         )
 
     @strawberry.mutation
-    async def create_article_comment(
+    async def create_comment(
         self, article_id: str, content: str, info: TypedInfo
     ) -> CommentType:
         # get current authenticated user - auth required
@@ -146,7 +146,7 @@ class Mutation:
         )
 
     @strawberry.mutation
-    async def update_article_comment(
+    async def update_comment(
         self, comment_id: str, content: str, info: TypedInfo
     ) -> CommentType:
         # get current authenticated user - auth required
@@ -156,6 +156,17 @@ class Mutation:
         service = CommentService(comment_repository)
         return await service.update_comment(
             comment_id=int(comment_id), content=content, author_id=user_data.id
+        )
+
+    @strawberry.mutation
+    async def delete_comment(self, comment_id: str, info: TypedInfo) -> None:
+        # get current authenticated user - auth required
+        author = await get_current_user(info.context)
+
+        comment_repository = CommentRepository(info.context['db_session'])
+        service = CommentService(comment_repository)
+        await service.delete_comment(
+            author_id=author.id, comment_id=int(comment_id)
         )
 
 
