@@ -23,17 +23,16 @@ class CommentService:
     async def get_article_comments(self, article_id: int) -> List[CommentDTO]:
         return await self.comment_repository.get_all_by_article_id(article_id)
 
-    # async def update_comment(self, author_id: int, comment_id: int,
-    #                          title: str, content: str) -> CommentDTO:
-    #     comment = CommentUpdateDTO(
-    #         title=title,
-    #         content=content
-    #     )
-    #     updated_comment = await self.comment_repository.update(
-    #         author_id, comment_id, comment)
-    #     return updated_comment
+    async def update_comment(
+        self, comment_id: int, content: str, author_id: int
+    ) -> CommentDTO:
+        comment = CommentUpdateDTO(
+            comment_id=comment_id, author_id=author_id, content=content
+        )
+        updated_comment = await self.comment_repository.update(comment)
+        return updated_comment
 
-    # async def delete_comment(
-    #         self, author_id: int, comment_id: int):
-    #     await self.comment_repository.delete(
-    #         author_id, comment_id)
+    async def delete_comment(
+            self, author_id: int, comment_id: int):
+        await self.comment_repository.delete(
+            author_id, comment_id)

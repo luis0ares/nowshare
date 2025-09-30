@@ -11,6 +11,8 @@ class CommentCreateDTO:
 
 @dataclass
 class CommentUpdateDTO:
+    comment_id: int
+    author_id: int
     content: str
 
 

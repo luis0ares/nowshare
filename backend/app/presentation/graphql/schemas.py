@@ -28,6 +28,8 @@ class CommentType:
     id: str
     content: str
     author_id: int
+    created_at: datetime
+    updated_at: datetime | None
 
     @strawberry.field
     async def author(self, info: TypedInfo) -> UserType:
@@ -140,7 +142,20 @@ class Mutation:
         comment_repository = CommentRepository(info.context['db_session'])
         service = CommentService(comment_repository)
         return await service.create_comment(
-            int(article_id), content, user_data.id
+            author_id=int(article_id), content=content, article_id=user_data.id
+        )
+
+    @strawberry.mutation
+    async def update_article_comment(
+        self, comment_id: str, content: str, info: TypedInfo
+    ) -> CommentType:
+        # get current authenticated user - auth required
+        user_data = await get_current_user(info.context)
+
+        comment_repository = CommentRepository(info.context['db_session'])
+        service = CommentService(comment_repository)
+        return await service.update_comment(
+            comment_id=int(comment_id), content=content, author_id=user_data.id
         )
 
 
