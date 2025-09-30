@@ -1,7 +1,8 @@
-import strawberry
 from datetime import datetime
-from strawberry.fastapi import GraphQLRouter
 from typing import List
+
+import strawberry
+from strawberry.fastapi import GraphQLRouter
 
 from app.application.services.article import ArticleService
 from app.application.services.comment import CommentService

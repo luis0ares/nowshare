@@ -7,7 +7,6 @@ from app.presentation.api.oauth import auth_router
 from app.presentation.graphql.schemas import graphql_app
 from app.presentation.handlers import register_handlers
 
-
 app = FastAPI(
     title='NowShare API',
     description='Simple knowledge share platform built with FastAPI and Strawberry',

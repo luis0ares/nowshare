@@ -1,8 +1,9 @@
 from typing import List
+
 from app.domain.dto.comment import (
     CommentCreateDTO,
-    CommentUpdateDTO,
     CommentDTO,
+    CommentUpdateDTO,
 )
 from app.domain.repositories.comments import CommentRepository
 

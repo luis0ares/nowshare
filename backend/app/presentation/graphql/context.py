@@ -1,8 +1,8 @@
 from typing import Any, TypedDict
-from fastapi import Request
-from strawberry import Info
-from sqlalchemy.ext.asyncio import AsyncSession
 
+from fastapi import Request
+from sqlalchemy.ext.asyncio import AsyncSession
+from strawberry import Info
 
 from app.application.use_cases.get_me import GetMeUseCase
 from app.domain.dto.user import UserDTO
