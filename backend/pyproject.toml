@@ -23,6 +23,7 @@ email-validator = "^2.2.0"
 asyncpg = "^0.30.0"
 httpx = "^0.28.1"
 pyjwt = "^2.10.1"
+strawberry-graphql = {extras = ["fastapi"], version = "^0.282.0"}
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.12.7"

@@ -37,10 +37,11 @@ This project is structured as a **monorepo**, containing both **backend** and **
 
 - [x] Project setup (FastAPI)
 - [x] Database schema for users, articles and comments
-- [ ] Set up **graphql schemas** and **mutations** for articles and comments
+- [x] Set up **graphql schemas** and **mutations** for articles and comments
 - [x] Oauth with github
-- [ ] Implement **article CRUD** (read, update, delete)
-- [ ] Implement **category CRUD** (read, update, delete)
+- [x] Implement **article CRUD** (read, update, delete)
+- [x] Implement **user comment CRUD** (read, update, delete)
+- [ ] Tests
 
 ---
 
@@ -88,3 +89,4 @@ poetry run task run
 - ✅ Project entities created
 - ✅ Alembic setup with first migration
 - ✅ REST API endpoints to handle github oauth, logout and token refresh
+- ✅ GraphQL queries and mutations for user, articles and comments

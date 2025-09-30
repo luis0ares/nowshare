@@ -21,19 +21,19 @@ class GithubCallbackUseCase:
     async def _get_user_data(self, code: str) -> GithubUser:
         async with AsyncClient() as client:
             resp = await client.post(
-                "https://github.com/login/oauth/access_token",
+                'https://github.com/login/oauth/access_token',
                 data={
-                    "client_id": envs.GITHUB_CLIENT_ID,
-                    "client_secret": envs.GITHUB_CLIENT_SECRET,
-                    "code": code,
+                    'client_id': envs.GITHUB_CLIENT_ID,
+                    'client_secret': envs.GITHUB_CLIENT_SECRET,
+                    'code': code,
                 },
-                headers={"Accept": "application/json"},
+                headers={'Accept': 'application/json'},
             )
-            access_token = resp.json()["access_token"]
+            access_token = resp.json()['access_token']
 
             user_resp = await client.get(
-                "https://api.github.com/user",
-                headers={"Authorization": f"Bearer {access_token}"}
+                'https://api.github.com/user',
+                headers={'Authorization': f'Bearer {access_token}'},
             )
             return user_resp.json()
 
@@ -42,8 +42,8 @@ class GithubCallbackUseCase:
 
         user = UserCreateUpdateDTO(
             sub=str(github_user['id']),
-            avatar_url=github_user["avatar_url"],
-            username=github_user['name']
+            avatar_url=github_user['avatar_url'],
+            username=github_user['name'],
         )
         user = await self.user_repository.create_or_update(user)
 

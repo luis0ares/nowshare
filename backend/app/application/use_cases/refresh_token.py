@@ -9,7 +9,7 @@ class RefreshTokenUseCase:
         if not refresh_token:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Not authenticated",
+                detail='Not authenticated',
             )
 
         try:
@@ -19,13 +19,13 @@ class RefreshTokenUseCase:
         except jwt.ExpiredSignatureError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token expired",
+                detail='Token expired',
             )
         except jwt.InvalidTokenError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token",
+                detail='Invalid token',
             )
 
-        user_sub = payload.get("sub")
+        user_sub = payload.get('sub')
         return create_tokens(user_sub)
