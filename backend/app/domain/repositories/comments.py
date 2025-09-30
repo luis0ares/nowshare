@@ -3,7 +3,11 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import ResourseNotFound
-from app.domain.dto.comment import CommentCreateDTO, CommentDTO, CommentUpdateDTO
+from app.domain.dto.comment import (
+    CommentCreateDTO,
+    CommentDTO,
+    CommentUpdateDTO,
+)
 from app.domain.models import Comment
 
 

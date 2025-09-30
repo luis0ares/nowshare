@@ -32,7 +32,5 @@ class CommentService:
         updated_comment = await self.comment_repository.update(comment)
         return updated_comment
 
-    async def delete_comment(
-            self, author_id: int, comment_id: int):
-        await self.comment_repository.delete(
-            author_id, comment_id)
+    async def delete_comment(self, author_id: int, comment_id: int):
+        await self.comment_repository.delete(author_id, comment_id)
