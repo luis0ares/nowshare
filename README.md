@@ -90,3 +90,5 @@ poetry run task run
 - ✅ Alembic setup with first migration
 - ✅ REST API endpoints to handle github oauth, logout and token refresh
 - ✅ GraphQL queries and mutations for user, articles and comments
+
+### **v0.2.0 - Frontend Integration**
