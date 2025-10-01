@@ -7,12 +7,12 @@ from sqlalchemy.ext.asyncio import (
 )
 from testcontainers.postgres import PostgresContainer
 
-from app.infrastructure.db.database import get_session
-from app.infrastructure.db.models import Base
+from app.config.db import get_session
+from app.domain.models import Base
 from app.main import app as main_app
 
 
-@pytest_asyncio.fixture(scope="session")
+@pytest_asyncio.fixture(scope='session')
 async def db_container():
     container = PostgresContainer('postgres:14', driver='asyncpg')
     container.start()
@@ -23,7 +23,7 @@ async def db_container():
 @pytest_asyncio.fixture
 async def db_session(db_container):
     db_url = db_container.get_connection_url().replace(
-        "postgresql://", "postgresql+asyncpg://"
+        'postgresql://', 'postgresql+asyncpg://'
     )
     async_engine = create_async_engine(db_url, echo=False, future=True)
 
@@ -44,6 +44,7 @@ async def async_client(db_session: AsyncSession):
     """
     Async HTTP client for the FastAPI app, using the test DB session.
     """
+
     # Dependency override to inject the test session
     async def override_get_session():
         yield db_session
@@ -51,8 +52,9 @@ async def async_client(db_session: AsyncSession):
     main_app.dependency_overrides[get_session] = override_get_session
 
     transport = ASGITransport(app=main_app)
-    async with AsyncClient(transport=transport,
-                           base_url="http://test/api") as client:
+    async with AsyncClient(
+        transport=transport, base_url='http://test/api'
+    ) as client:
         yield client
 
     main_app.dependency_overrides.clear()

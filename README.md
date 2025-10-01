@@ -22,7 +22,7 @@ This project is structured as a **monorepo**, containing both **backend** and **
 
 ## ✅ To-Do List
 
-- [ ] Set up CI/CD pipeline (GitHub Actions)
+- [x] Set up CI/CD pipeline (GitHub Actions)
 
 ### **Frontend**
 
@@ -37,10 +37,11 @@ This project is structured as a **monorepo**, containing both **backend** and **
 
 - [x] Project setup (FastAPI)
 - [x] Database schema for users, articles and comments
-- [ ] Set up **graphql schemas** and **mutations** for articles and comments
-- [ ] Oauth with github
-- [ ] Implement **article CRUD** (read, update, delete)
-- [ ] Implement **category CRUD** (read, update, delete)
+- [x] Set up **graphql schemas** and **mutations** for articles and comments
+- [x] Oauth with github
+- [x] Implement **article CRUD** (read, update, delete)
+- [x] Implement **user comment CRUD** (read, update, delete)
+- [ ] Tests
 
 ---
 
@@ -72,3 +73,20 @@ cd backend
 poetry install
 poetry run task run
 ```
+
+---
+
+## 📜 Changelog
+
+### **v0.1.0 - Initial Setup**
+
+- ✅ Created monorepo structure
+- ✅ Initialized frontend with Next.js and Tailwind CSS
+- ✅ Initialized backend with FastAPI & Strawberry
+- ✅ Created basic project structure
+- ✅ Set up basic backend project configuration and dependencies
+- ✅ CI/CD pipelines for frontend and backend applications
+- ✅ Project entities created
+- ✅ Alembic setup with first migration
+- ✅ REST API endpoints to handle github oauth, logout and token refresh
+- ✅ GraphQL queries and mutations for user, articles and comments

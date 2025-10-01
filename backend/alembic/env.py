@@ -12,7 +12,8 @@ from alembic import context
 config = context.config
 
 from app.config.settings import envs
-config.set_main_option("sqlalchemy.url", envs.DATABASE_URL)
+
+config.set_main_option('sqlalchemy.url', envs.DATABASE_URL)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -21,7 +22,8 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from app.db import models
+from app.domain import models
+
 target_metadata = models.Base.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -42,12 +44,12 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = config.get_main_option('sqlalchemy.url')
     context.configure(
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
-        dialect_opts={"paramstyle": "named"},
+        dialect_opts={'paramstyle': 'named'},
     )
 
     with context.begin_transaction():
@@ -69,7 +71,7 @@ async def run_async_migrations() -> None:
 
     connectable = async_engine_from_config(
         config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
+        prefix='sqlalchemy.',
         poolclass=pool.NullPool,
     )
 

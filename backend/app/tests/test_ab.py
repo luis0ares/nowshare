@@ -1,10 +1,11 @@
 from httpx import AsyncClient
 
 
-async def test_ab(async_client: AsyncClient):
+async def test_docs(async_client: AsyncClient):
     # Arrange & Act
-    response = await async_client.get('/')
+    response = await async_client.get('/docs')
 
     # Assert
-    assert response.status_code == 200, \
-        f"Expected status code 201, but got {response.status_code}"
+    assert response.status_code == 200, (
+        f'Expected status code 200, but got {response.status_code}'
+    )
