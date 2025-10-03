@@ -33,8 +33,31 @@ export default function ArticlePage() {
   const data: ArticleType = {
     id: "1",
     title: "Getting Started with TypeScript",
-    content:
-      "TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.",
+    content: `# Introduction
+
+  TypeScript is a **typed superset** of JavaScript that compiles to plain JavaScript.  
+  It adds _static typing_, which helps developers catch errors earlier.
+
+  ## Example
+
+  Here’s a simple function in TypeScript:
+
+  \`\`\`ts
+  function greet(name: string): string {
+    return \`Hello, \${name}!\`;
+  }
+
+  console.log(greet("World"));
+  \`\`\`
+
+  ## Benefits
+
+  - Safer code
+  - Better tooling support (IntelliSense, autocompletion)
+  - Easier refactoring
+
+  > "JavaScript that scales." – TypeScript slogan
+  `,
     tags: ["typescript", "javascript", "programming"],
     author: {
       id: "a1",
@@ -70,9 +93,7 @@ export default function ArticlePage() {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <article className="space-y-8">
         <div className="flex items-center justify-between">
-          
           <div className="flex items-center text-sm text-muted-foreground gap-4 ml-auto">
-
             {/* <div className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
               <span>5 min to read</span>
@@ -86,29 +107,34 @@ export default function ArticlePage() {
 
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
-
-          <Avatar className="h-12 w-12">
-            <AvatarImage src={data.author.avatarUrl} alt="author avatar" />
-            <AvatarFallback>{getInitials(data.author.username)}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-medium">{data.author.username}</p>
-          </div>
-          </div>
-                      <div className="flex items-center gap-1">
-              <Calendar className="h-4 w-4" />
-              <span>{data.createdAt}</span>
+            <Avatar className="h-12 w-12">
+              <AvatarImage src={data.author.avatarUrl} alt="author avatar" />
+              <AvatarFallback>
+                {getInitials(data.author.username)}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-medium">{data.author.username}</p>
             </div>
+          </div>
+          <div className="flex items-center gap-1">
+            <Calendar className="h-4 w-4" />
+            <span>{data.createdAt}</span>
+          </div>
         </div>
 
         <MarkdownRenderer
           content={data.content}
-          className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-h2:text-2xl prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-blockquote:text-gray-600 dark:prose-blockquote:text-gray-400 prose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-700 prose-blockquote:pl-4 prose-blockquote:italic prose-li:text-gray-700 dark:prose-li:text-gray-300"
+          className=""
         />
 
         <div className="flex flex-wrap gap-2">
           {data.tags?.map((tag) => {
-            return <Badge key={tag} variant="outline" className="rounded-full px-3">{tag}</Badge>;
+            return (
+              <Badge key={tag} variant="outline" className="rounded-full px-3">
+                {tag}
+              </Badge>
+            );
           })}
         </div>
 
