@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, FileText, PenTool } from "lucide-react";
 import { getInitials } from "@/lib/utils";
+import { ThemeToggle } from "./theme-toggle";
 
 function UserProfile(props: {
   id: string;
@@ -22,8 +23,8 @@ function UserProfile(props: {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="relative h-8 w-8 rounded-full ring-offset-background transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-          <Avatar className="h-8 w-8">
+        <button className="relative h-10 w-10 rounded-full ring-offset-background transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+          <Avatar className="h-10 w-10">
             <AvatarImage src={props.avatar} alt="User avatar" />
             <AvatarFallback>{getInitials(props.name)}</AvatarFallback>
           </Avatar>
@@ -60,12 +61,18 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen items-center">
         <div className="mr-4 flex flex-1 items-center justify-between px-2">
-          <Link href="/" className="flex items-center space-x-2 text-emerald-600 hover:text-emerald-500">
-            <PenTool className="w-9 h-9"/>
+          <Link
+            href="/"
+            className="flex items-center space-x-2 text-emerald-600 hover:text-emerald-500"
+          >
+            <PenTool className="w-9 h-9" />
             <span className="font-bold text-2xl">NowShare</span>
           </Link>
 
-          <UserProfile id="abc" name="Jhon Doe" email="jhon.doe@user.com" />
+          <div className="flex gap-7 items-center">
+            <ThemeToggle />
+            <UserProfile id="abc" name="Jhon Doe" email="jhon.doe@user.com" />
+          </div>
         </div>
       </div>
     </nav>
