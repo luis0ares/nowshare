@@ -10,9 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, FileText, PenTool } from "lucide-react";
+import { LogOut, FileText, PenTool, Github } from "lucide-react";
 import { getInitials } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
+import { LinkButton } from "./ui/button";
 
 function UserProfile(props: {
   id: string;
@@ -69,9 +70,19 @@ export function Navbar() {
             <span className="font-bold text-2xl">NowShare</span>
           </Link>
 
-          <div className="flex gap-7 items-center">
+          <div className="flex gap-4 items-center">
             <ThemeToggle />
             <UserProfile id="abc" name="Jhon Doe" email="jhon.doe@user.com" />
+
+            <LinkButton
+              variant="outline"
+              className="bg-transparent text-base"
+              size="lg"
+              href={process.env.NEXT_PUBLIC_GITHUB_OAUTH_URI}
+            >
+              <Github className="mr-2 w-9 h-9" />
+              Sign In with GitHub
+            </LinkButton>
           </div>
         </div>
       </div>
