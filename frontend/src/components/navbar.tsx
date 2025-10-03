@@ -10,19 +10,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, User, FileText } from "lucide-react";
-
-function getInitials(username: string): string {
-  const parts = username.trim().split(/\s+/).filter(Boolean);
-
-  if (parts.length === 0) return "";
-
-  if (parts.length === 1) {
-    return parts[0][0].toUpperCase();
-  }
-
-  return (parts[0][0] + parts[1][0]).toUpperCase();
-}
+import { LogOut, FileText, PenTool } from "lucide-react";
+import { getInitials } from "@/lib/utils";
 
 function UserProfile(props: {
   id: string;
@@ -71,8 +60,9 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen items-center">
         <div className="mr-4 flex flex-1 items-center justify-between px-2">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="font-bold text-xl text-emerald-600">NowShare</span>
+          <Link href="/" className="flex items-center space-x-2 text-emerald-600 hover:text-emerald-500">
+            <PenTool className="w-9 h-9"/>
+            <span className="font-bold text-2xl">NowShare</span>
           </Link>
 
           <UserProfile id="abc" name="Jhon Doe" email="jhon.doe@user.com" />
