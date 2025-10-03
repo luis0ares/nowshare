@@ -13,6 +13,8 @@ export function MarkdownRenderer({
   content: string;
   className?: string;
 }) {
+  if (!content) return <></>
+
   return (
     <div
       className={cn(
