@@ -13,7 +13,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
+
+  React.useEffect(() => {
+    if (theme === "dark" || theme === "light") {
+      document.documentElement.setAttribute("data-color-mode", theme);
+    } else {
+      document.documentElement.removeAttribute("data-color-mode");
+    }
+  }, [theme]);
 
   return (
     <DropdownMenu>
