@@ -39,7 +39,7 @@ async def github_oauth_callback(
     use_case = GithubCallbackUseCase(user_repository)
     tokens = await use_case.execute(code)
 
-    response = RedirectResponse(envs.LOGGED_REDIRECT)
+    response = RedirectResponse(f'{envs.LOGGED_REDIRECT}?status=success')
     response.set_cookie(
         key='__access',
         value=tokens.access,

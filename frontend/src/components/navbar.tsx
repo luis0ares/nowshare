@@ -13,31 +13,34 @@ import {
 import { LogOut, FileText, PenTool, Github } from "lucide-react";
 import { getInitials } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
-import { LinkButton } from "./ui/button";
+import { OauthLoginButton } from "./oauth-button";
+import { useUser } from "@/context/user-context";
+import { UserShield } from "./user-shield";
 
-function UserProfile(props: {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-}) {
+function UserProfile(props: { id: string; username: string; avatar?: string }) {
+  const { logout } = useUser();
+
+  async function handleLogout() {
+    const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "/auth/logout");
+    if (res.status === 200) {
+      logout();
+    }
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="relative h-10 w-10 rounded-full ring-offset-background transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           <Avatar className="h-10 w-10">
             <AvatarImage src={props.avatar} alt="User avatar" />
-            <AvatarFallback>{getInitials(props.name)}</AvatarFallback>
+            <AvatarFallback>{getInitials(props.username)}</AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent className="w-auto" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{props.name}</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {props.email}
-            </p>
+            <p className="text-sm font-medium leading-none">{props.username}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -48,9 +51,11 @@ function UserProfile(props: {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer text-red-600 focus:text-red-600">
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log-out</span>
+        <DropdownMenuItem asChild>
+          <button onClick={handleLogout} className="cursor-pointer w-full">
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log-out</span>
+          </button>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -72,17 +77,16 @@ export function Navbar() {
 
           <div className="flex gap-4 items-center">
             <ThemeToggle />
-            <UserProfile id="abc" name="Jhon Doe" email="jhon.doe@user.com" />
-
-            <LinkButton
-              variant="outline"
-              className="bg-transparent text-base"
-              size="lg"
-              href={process.env.NEXT_PUBLIC_GITHUB_OAUTH_URI}
+            <UserShield
+              fallback={
+                <OauthLoginButton path="/auth/github/login">
+                  <Github className="mr-2 w-9 h-9" />
+                  Sign In with GitHub
+                </OauthLoginButton>
+              }
             >
-              <Github className="mr-2 w-9 h-9" />
-              Sign In with GitHub
-            </LinkButton>
+              <UserProfile id="abc" username="Jhon Doe" />
+            </UserShield>
           </div>
         </div>
       </div>

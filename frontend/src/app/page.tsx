@@ -9,7 +9,6 @@ const posts = [
     categories: ["Technology"],
     author: {
       name: "John Davis",
-      avatar: "/diverse-avatars.png",
       fallback: "JD",
     },
   },
@@ -21,7 +20,6 @@ const posts = [
     categories: ["Design"],
     author: {
       name: "Anna Smith",
-      avatar: "/professional-woman-diverse.png",
       fallback: "AS",
     },
   },
@@ -33,7 +31,6 @@ const posts = [
     categories: ["Development"],
     author: {
       name: "Charles Sanders",
-      avatar: "/young-man-developer.png",
       fallback: "CS",
     },
   },
@@ -45,7 +42,6 @@ const posts = [
     categories: ["Development"],
     author: {
       name: "Mary Oliver",
-      avatar: "/confident-business-woman.png",
       fallback: "MO",
     },
   },
@@ -57,7 +53,6 @@ const posts = [
     categories: ["Security"],
     author: {
       name: "Prof. Robert Lee",
-      avatar: "/older-man-professor.jpg",
       fallback: "RL",
     },
   },
@@ -69,7 +64,6 @@ const posts = [
     categories: ["Technology"],
     author: {
       name: "Julia Carter",
-      avatar: "/young-woman-student.png",
       fallback: "JC",
     },
   },
@@ -81,7 +75,6 @@ const posts = [
     categories: ["Design"],
     author: {
       name: "Anna Smith",
-      avatar: "/professional-woman-diverse.png",
       fallback: "AS",
     },
   },
@@ -93,7 +86,6 @@ const posts = [
     categories: ["Development"],
     author: {
       name: "Charles Sanders",
-      avatar: "/young-man-developer.png",
       fallback: "CS",
     },
   },
