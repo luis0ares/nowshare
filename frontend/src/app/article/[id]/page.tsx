@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Heart, MessageSquare, Share2 } from "lucide-react";
-import { getInitials, timeSince } from "@/lib/utils";
+import { getInitials, parseDate, timeSince } from "@/lib/utils";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 type ArticleType = {
@@ -119,7 +119,7 @@ export default function ArticlePage() {
           </div>
           <div className="flex items-center gap-1">
             <Calendar className="h-4 w-4" />
-            <span>{data.createdAt}</span>
+            <span>{parseDate(data.createdAt, "dd/mm/yyyy, hh:mm:ss")}</span>
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { format } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -33,5 +34,14 @@ export function timeSince(isoUtcString: string): string {
     return `${diffHours} hour${diffHours > 1 ? "s" : ""}`;
   } else {
     return "less than 1 hour";
+  }
+}
+
+export function parseDate(isoDate: string, formatStr: string): string {
+  try {
+    const currentDate = new Date(isoDate);
+    return format(currentDate, formatStr);
+  } catch {
+    return isoDate;
   }
 }

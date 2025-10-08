@@ -2,18 +2,8 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useLazyQuery } from "@apollo/client/react";
-import { gql } from "@apollo/client";
-import UserContext, { User } from "@/context/user-context";
-
-const GET_ME = gql`
-  query Me {
-    me {
-      avatarUrl
-      id
-      username
-    }
-  }
-`;
+import UserContext from "@/context/user-context";
+import { GET_ME, User } from "@/graphql/query";
 
 type Props = {
   children: React.ReactNode;
@@ -21,10 +11,9 @@ type Props = {
 
 export const UserProvider: React.FC<Props> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [getUser, { data, loading }] = useLazyQuery<{ me: User }>(
-    GET_ME,
-    { fetchPolicy: "network-only" } // always check fresh user info
-  );
+  const [getUser, { data, loading }] = useLazyQuery<{ me: User }>(GET_ME, {
+    fetchPolicy: "standby",
+  });
 
   const refetchUser = useCallback(() => {
     getUser();
