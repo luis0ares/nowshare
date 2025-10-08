@@ -6,7 +6,7 @@ export type User = {
   avatarUrl?: string;
 };
 export const GET_ME = gql`
-  query CurrentUser {
+  query Me {
     me {
       avatarUrl
       id

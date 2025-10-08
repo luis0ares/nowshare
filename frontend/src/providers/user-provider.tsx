@@ -11,9 +11,10 @@ type Props = {
 
 export const UserProvider: React.FC<Props> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [getUser, { data, loading }] = useLazyQuery<{ me: User }>(GET_ME, {
-    fetchPolicy: "standby",
-  });
+  const [getUser, { data, loading }] = useLazyQuery<{ me: User }>(
+    GET_ME,
+    { fetchPolicy: "network-only" } // always check fresh user info
+  );
 
   const refetchUser = useCallback(() => {
     getUser();
