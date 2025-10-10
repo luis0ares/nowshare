@@ -2,13 +2,28 @@
 
 import { useState } from "react";
 import { ArticleCard } from "@/components/article-card";
-import { ArticlesList, LIST_ALL_ARTICLES } from "@/graphql/query";
+import { UserArticlesList, USER_LIST_ALL_ARTICLES } from "@/graphql/query";
 import { useQuery } from "@apollo/client/react";
+import { useUser } from "@/context/user-context";
+import { useRouter } from "next/navigation";
 
 export default function MyArticles() {
+  const router = useRouter();
+  const { user } = useUser();
+
+  if (!user) {
+    router.push("/");
+    return <></>;
+  }
+
   const [search, setSearch] = useState("");
-  const { loading, data } = useQuery<{ articles: ArticlesList }>(
-    LIST_ALL_ARTICLES
+  const { loading, data } = useQuery<{ articles: UserArticlesList }>(
+    USER_LIST_ALL_ARTICLES,
+    {
+      variables: {
+        authorId: user.id,
+      },
+    }
   );
 
   if (loading || !data) return <></>;
