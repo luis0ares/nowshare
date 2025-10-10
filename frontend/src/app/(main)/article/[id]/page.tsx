@@ -81,7 +81,7 @@ export default function ArticlePage({
     variables: { articleId: id },
   });
 
-  if (!data) return <></>
+  if (!data) return null
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">

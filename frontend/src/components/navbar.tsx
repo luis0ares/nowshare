@@ -17,8 +17,8 @@ import { OauthLoginButton } from "./oauth-button";
 import { useUser } from "@/context/user-context";
 import { UserShield } from "./user-shield";
 
-function UserProfile(props: { id: string; username: string; avatar?: string }) {
-  const { logout } = useUser();
+function UserProfile() {
+  const { logout, user } = useUser();
 
   async function handleLogout() {
     const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "/auth/logout");
@@ -27,20 +27,22 @@ function UserProfile(props: { id: string; username: string; avatar?: string }) {
     }
   }
 
+  if (!user) return null;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="relative h-10 w-10 rounded-full ring-offset-background transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={props.avatar} alt="User avatar" />
-            <AvatarFallback>{getInitials(props.username)}</AvatarFallback>
+            <AvatarImage src={user.avatarUrl} alt="User avatar" />
+            <AvatarFallback>{getInitials(user.username)}</AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-auto" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{props.username}</p>
+            <p className="text-sm font-medium leading-none">{user.username}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -85,7 +87,7 @@ export function Navbar() {
                 </OauthLoginButton>
               }
             >
-              <UserProfile id="abc" username="Jhon Doe" />
+              <UserProfile />
             </UserShield>
           </div>
         </div>

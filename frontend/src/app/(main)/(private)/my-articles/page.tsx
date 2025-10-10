@@ -19,7 +19,7 @@ export default function MyArticles() {
     }
   );
 
-  if (loading || !data) return <></>;
+  if (loading || !data) return null;
 
   const filteredArticles = data.articles.filter((article) =>
     article.title.toLowerCase().includes(search.toLowerCase())

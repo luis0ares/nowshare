@@ -13,7 +13,7 @@ export function MarkdownRenderer({
   content: string;
   className?: string;
 }) {
-  if (!content) return <></>
+  if (!content) return null
 
   return (
     <div
