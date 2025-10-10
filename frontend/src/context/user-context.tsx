@@ -1,3 +1,5 @@
+"use client";
+
 import { User } from "@/graphql/query";
 import { createContext, useContext } from "react";
 

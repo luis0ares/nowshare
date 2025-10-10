@@ -1,3 +1,5 @@
+"use client";
+
 import { useUser } from "@/context/user-context";
 import React from "react";
 

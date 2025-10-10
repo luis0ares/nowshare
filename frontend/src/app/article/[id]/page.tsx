@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Heart, MessageSquare, Share2 } from "lucide-react";
 import { getInitials, parseDate, timeSince } from "@/lib/utils";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
+import { UserShield } from "@/components/user-shield";
 
 type ArticleType = {
   id: string;
@@ -123,10 +124,7 @@ export default function ArticlePage() {
           </div>
         </div>
 
-        <MarkdownRenderer
-          content={data.content}
-          className=""
-        />
+        <MarkdownRenderer content={data.content} className="" />
 
         <div className="flex flex-wrap gap-2">
           {data.tags?.map((tag) => {
@@ -143,24 +141,26 @@ export default function ArticlePage() {
             Comments ({data.comments.length})
           </h3>
 
-          {/* Form to post a new comment */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Post your comment</h4>
-            <div className="space-y-3">
-              <textarea
-                placeholder="Write your comment here..."
-                className="w-full min-h-[100px] p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-              />
-              <div className="flex justify-between items-center">
-                <p className="text-sm text-muted-foreground">
-                  Be respectful and constructive in your comments
-                </p>
-                <Button className="bg-emerald-600 hover:bg-emerald-700">
-                  Submit comment
-                </Button>
+          <UserShield>
+            {/* Form to post a new comment */}
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold">Post your comment</h4>
+              <div className="space-y-3">
+                <textarea
+                  placeholder="Write your comment here..."
+                  className="w-full min-h-[100px] p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                />
+                <div className="flex justify-between items-center">
+                  <p className="text-sm text-muted-foreground">
+                    Be respectful and constructive in your comments
+                  </p>
+                  <Button className="bg-emerald-600 hover:bg-emerald-700">
+                    Submit comment
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
+          </UserShield>
 
           {/* Comments listing */}
           <div className="space-y-6">
