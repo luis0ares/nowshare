@@ -70,7 +70,8 @@ export type Article = {
     id: string;
     avatarUrl: string;
   };
-  comments: Array<{
+  createdAt: string;
+  comments: {
     id: string;
     createdAt: string;
     content: string;
@@ -79,7 +80,7 @@ export type Article = {
       avatarUrl: string;
       id: string;
     };
-  }>;
+  }[];
 };
 export const GET_ARTICLE = gql`
   query Query($articleId: String!) {
@@ -92,6 +93,7 @@ export const GET_ARTICLE = gql`
         id
         avatarUrl
       }
+      createdAt
       comments {
         id
         createdAt

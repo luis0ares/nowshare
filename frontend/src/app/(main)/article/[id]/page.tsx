@@ -1,40 +1,20 @@
-import Image from "next/image";
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Heart, MessageSquare, Share2 } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { getInitials, parseDate, timeSince } from "@/lib/utils";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { UserShield } from "@/components/user-shield";
+import { useQuery } from "@apollo/client/react";
+import { Article, GET_ARTICLE } from "@/graphql/query";
+import { use } from "react";
 
-type ArticleType = {
-  id: string;
-  title: string;
-  content: string;
-  tags?: string[];
-  author: {
-    id: string;
-    username: string;
-    avatarUrl: string;
-  };
-  comments: {
-    id: string;
-    content: string;
-    createdAt: string;
-    author: {
-      id: string;
-      username: string;
-      avatarUrl: string;
-    };
-  }[];
-  createdAt: string;
-};
-
-export default function ArticlePage() {
-  const data: ArticleType = {
-    id: "1",
-    title: "Getting Started with TypeScript",
-    content: `# Introduction
+const _data = {
+  id: "1",
+  title: "Getting Started with TypeScript",
+  content: `# Introduction
 
   TypeScript is a **typed superset** of JavaScript that compiles to plain JavaScript.  
   It adds _static typing_, which helps developers catch errors earlier.
@@ -59,86 +39,80 @@ export default function ArticlePage() {
 
   > "JavaScript that scales." – TypeScript slogan
   `,
-    tags: ["typescript", "javascript", "programming"],
-    author: {
-      id: "a1",
-      username: "devUser",
-      avatarUrl: "https://example.com/avatar1.png",
+  tags: ["typescript", "javascript", "programming"],
+  author: {
+    id: "a1",
+    username: "devUser",
+    avatarUrl: "https://example.com/avatar1.png",
+  },
+  comments: [
+    {
+      id: "c1",
+      content: "Great article! Helped me a lot.",
+      createdAt: "2025-10-02T10:00:00.000Z",
+      author: {
+        id: "u2",
+        username: "reader123",
+        avatarUrl: "https://example.com/avatar2.png",
+      },
     },
-    comments: [
-      {
-        id: "c1",
-        content: "Great article! Helped me a lot.",
-        createdAt: "2025-10-02T10:00:00.000Z",
-        author: {
-          id: "u2",
-          username: "reader123",
-          avatarUrl: "https://example.com/avatar2.png",
-        },
+    {
+      id: "c2",
+      content: "Thanks for sharing, I was struggling with types.",
+      createdAt: "2025-10-02T12:00:00.000Z",
+      author: {
+        id: "u3",
+        username: "techFan",
+        avatarUrl: "https://example.com/avatar3.png",
       },
-      {
-        id: "c2",
-        content: "Thanks for sharing, I was struggling with types.",
-        createdAt: "2025-10-02T12:00:00.000Z",
-        author: {
-          id: "u3",
-          username: "techFan",
-          avatarUrl: "https://example.com/avatar3.png",
-        },
-      },
-    ],
-    createdAt: "2025-10-02T09:00:00.000Z",
-  };
+    },
+  ],
+  createdAt: "2025-10-02T10:00:00.000Z",
+};
+
+export default function ArticlePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
+
+  const { data } = useQuery<{ article: Article }>(GET_ARTICLE, {
+    variables: { articleId: id },
+  });
+
+  if (!data) return <></>
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <article className="space-y-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center text-sm text-muted-foreground gap-4 ml-auto">
-            {/* <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              <span>5 min to read</span>
-            </div> */}
-          </div>
-        </div>
-
         <h1 className="text-4xl font-bold tracking-tight lg:text-5xl">
-          {data.title}
+          {data.article.title}
         </h1>
 
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
-            <Avatar className="h-12 w-12">
-              <AvatarImage src={data.author.avatarUrl} alt="author avatar" />
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={data.article.author.avatarUrl} alt="author avatar" />
               <AvatarFallback>
-                {getInitials(data.author.username)}
+                {getInitials(data.article.author.username)}
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-medium">{data.author.username}</p>
+              <p className="font-medium">{data.article.author.username}</p>
             </div>
           </div>
           <div className="flex items-center gap-1">
             <Calendar className="h-4 w-4" />
-            <span>{parseDate(data.createdAt, "dd/mm/yyyy, hh:mm:ss")}</span>
+            <span>{parseDate(data.article.createdAt, "yyyy-MM-dd, HH:mm:ss")}</span>
           </div>
         </div>
 
-        <MarkdownRenderer content={data.content} className="" />
-
-        <div className="flex flex-wrap gap-2">
-          {data.tags?.map((tag) => {
-            return (
-              <Badge key={tag} variant="outline" className="rounded-full px-3">
-                {tag}
-              </Badge>
-            );
-          })}
-        </div>
+        <MarkdownRenderer content={data.article.content} className="" />
 
         <div className="space-y-6 border-t pt-8">
           <h3 className="text-2xl font-bold">
-            Comments ({data.comments.length})
+            Comments ({data.article.comments.length})
           </h3>
 
           <UserShield>
@@ -164,7 +138,7 @@ export default function ArticlePage() {
 
           {/* Comments listing */}
           <div className="space-y-6">
-            {data.comments.map((comment) => {
+            {data.article.comments.map((comment) => {
               return (
                 <div className="flex gap-4" key={comment.id}>
                   <Avatar className="h-10 w-10 flex-shrink-0">

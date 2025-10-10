@@ -45,7 +45,7 @@ function UserProfile(props: { id: string; username: string; avatar?: string }) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/my-posts" className="cursor-pointer">
+          <Link href="/my-articles" className="cursor-pointer">
             <FileText className="mr-2 h-4 w-4" />
             <span>My Articles</span>
           </Link>

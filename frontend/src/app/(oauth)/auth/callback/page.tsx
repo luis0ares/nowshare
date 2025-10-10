@@ -22,9 +22,5 @@ export default function AuthCallbackPage() {
     }
   }, [status]);
 
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <p className="font-medium">Finalizing login...</p>
-    </div>
-  );
+  return <div></div>;
 }

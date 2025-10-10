@@ -11,18 +11,18 @@ export default function MyArticles() {
   const router = useRouter();
   const { user } = useUser();
 
-  if (!user) {
-    router.push("/");
-    return <></>;
-  }
+  if (user == null)
+    router.push("/")
 
+  return user ? <ListArticles authorId={user.id} /> : <></>;
+}
+
+function ListArticles({ authorId }: { authorId: string }) {
   const [search, setSearch] = useState("");
   const { loading, data } = useQuery<{ articles: UserArticlesList }>(
     USER_LIST_ALL_ARTICLES,
     {
-      variables: {
-        authorId: user.id,
-      },
+      variables: { authorId },
     }
   );
 

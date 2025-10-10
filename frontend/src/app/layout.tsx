@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { WrapperProvider } from "../providers/wrapper";
-import { Navbar } from "@/components/navbar";
 import "@uiw/react-markdown-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 
@@ -31,10 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <WrapperProvider>
-          <Navbar />
-          {children}
-        </WrapperProvider>
+        <WrapperProvider>{children}</WrapperProvider>
       </body>
     </html>
   );
