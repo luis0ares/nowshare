@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArticleCard } from "@/components/article-card";
 import { ArticlesList, LIST_ALL_ARTICLES } from "@/graphql/query";
 import { useQuery } from "@apollo/client/react";
+import { ArticleSearch } from "@/components/article-search";
 
 export default function Home() {
   const [search, setSearch] = useState("");
@@ -18,14 +19,20 @@ export default function Home() {
   );
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <input
-        type="text"
-        placeholder="Search by title..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="mb-12 w-full px-3 py-2 border rounded"
-      />
+    <div className="container mx-auto px-4 py-12 max-w-4xl space-y-12">
+      <div className="space-y-4">
+        <div className="space-y-4">
+          <h1 className="text-4xl font-bold tracking-tight lg:text-5xl">
+            Welcome to NowShare
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            Discover and share insights, tips, and stories about technology,
+            development, design, and more.
+          </p>
+        </div>
+        <ArticleSearch value={search} onChange={(v) => setSearch(v)} />
+      </div>
+
       <div className="space-y-6">
         {filteredArticles.map((article) => (
           <ArticleCard {...article} key={article.id} />

@@ -3,8 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Calendar } from "lucide-react";
 import Link from "next/link";
 
-
-
 export function ArticleCard(article: {
   id: string;
   title: string;
@@ -45,7 +43,7 @@ export function ArticleCard(article: {
 
         <div className="flex items-center gap-1 text-sm text-muted-foreground">
           <Calendar className="h-4 w-4" />
-          <span>{parseDate(article.createdAt, "dd/mm/yyyy, hh:mm:ss")}</span>
+          <span>{parseDate(article.createdAt, "yyyy-MM-dd, HH:mm:ss")}</span>
         </div>
       </div>
     </Link>

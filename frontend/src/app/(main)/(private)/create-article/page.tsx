@@ -2,7 +2,6 @@
 
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import dynamic from "next/dynamic";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -20,6 +19,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft } from "lucide-react";
+import { useMutation } from "@apollo/client/react";
+import { CREATE_ARTICLE, IdType } from "@/graphql/mutations";
+import { useRouter } from "next/navigation";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),
@@ -49,6 +51,11 @@ const postFormSchema = z.object({
 type PostFormValues = z.infer<typeof postFormSchema>;
 
 export default function CreateArticlePage() {
+  const router = useRouter();
+  const [createArticle, { data, loading, error }] = useMutation<{
+    createArticle: IdType;
+  }>(CREATE_ARTICLE);
+
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
     defaultValues: {
@@ -58,8 +65,10 @@ export default function CreateArticlePage() {
     mode: "onChange",
   });
 
-  function onSubmit(data: PostFormValues) {
-    console.log(data);
+  async function onSubmit({ title, content }: PostFormValues) {
+    const result = await createArticle({ variables: { title, content } });
+    if (result.data?.createArticle.id)
+      router.push(`/article/${result.data.createArticle.id}`);
   }
 
   return (
@@ -137,8 +146,10 @@ export default function CreateArticlePage() {
                     />
                   </FormControl>
                   <FormDescription className="flex justify-between">
-                    <span>Write the full content of your article. Use markdown for
-                    formatting.</span>
+                    <span>
+                      Write the full content of your article. Use markdown for
+                      formatting.
+                    </span>
                     <span>{field.value.length} / 10000 characters</span>
                   </FormDescription>
                   <FormMessage />

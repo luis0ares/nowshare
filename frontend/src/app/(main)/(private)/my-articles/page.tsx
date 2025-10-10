@@ -6,23 +6,16 @@ import { UserArticlesList, USER_LIST_ALL_ARTICLES } from "@/graphql/query";
 import { useQuery } from "@apollo/client/react";
 import { useUser } from "@/context/user-context";
 import { useRouter } from "next/navigation";
+import { ArticleSearch } from "@/components/article-search";
 
 export default function MyArticles() {
-  const router = useRouter();
   const { user } = useUser();
 
-  if (user == null)
-    router.push("/")
-
-  return user ? <ListArticles authorId={user.id} /> : <></>;
-}
-
-function ListArticles({ authorId }: { authorId: string }) {
   const [search, setSearch] = useState("");
   const { loading, data } = useQuery<{ articles: UserArticlesList }>(
     USER_LIST_ALL_ARTICLES,
     {
-      variables: { authorId },
+      variables: { authorId: user?.id },
     }
   );
 
@@ -33,14 +26,14 @@ function ListArticles({ authorId }: { authorId: string }) {
   );
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <input
-        type="text"
-        placeholder="Search by title..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="mb-12 w-full px-3 py-2 border rounded"
-      />
+    <div className="container mx-auto px-4 py-12 max-w-4xl space-y-12">
+      <div className="space-y-4">
+        <h1 className="text-4xl font-bold tracking-tight lg:text-5xl">
+          {`${user?.username}'s articles`}
+        </h1>
+        <ArticleSearch value={search} onChange={(v) => setSearch(v)} />
+      </div>
+
       <div className="space-y-6">
         {filteredArticles.map((article) => (
           <ArticleCard {...article} key={article.id} />
