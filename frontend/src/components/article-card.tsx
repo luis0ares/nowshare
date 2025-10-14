@@ -16,7 +16,7 @@ export function ArticleCard(article: {
     <Link
       key={article.id}
       href={`/article/${article.id}`}
-      className="group flex flex-col space-y-3 rounded-lg border bg-card p-6 transition-all hover:shadow-md hover:border-emerald-500"
+      className="group flex flex-col space-y-3 rounded-lg border bg-card p-6 transition-all hover:shadow-md hover:border-emerald-500 w-full"
     >
       <h2 className="text-2xl font-bold tracking-tight group-hover:text-emerald-600 transition-colors">
         {article.title}

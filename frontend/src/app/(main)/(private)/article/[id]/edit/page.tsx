@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { mdPlaceholder } from "./placeholder";
 import {
   Form,
   FormControl,
@@ -19,9 +18,11 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft } from "lucide-react";
-import { useMutation } from "@apollo/client/react";
-import { CREATE_ARTICLE, IdType } from "@/graphql/mutations";
+import { useMutation, useQuery } from "@apollo/client/react";
+import { EDIT_ARTICLE, IdType } from "@/graphql/mutations";
 import { useRouter } from "next/navigation";
+import { use } from "react";
+import { Article, GET_ARTICLE } from "@/graphql/query";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),
@@ -50,25 +51,55 @@ const postFormSchema = z.object({
 
 type PostFormValues = z.infer<typeof postFormSchema>;
 
-export default function CreateArticlePage() {
+export default function EditArticlePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
+
+  const { data } = useQuery<{ article: Article }>(GET_ARTICLE, {
+    variables: { articleId: id },
+  });
+
+  if (!data) return null;
+  return (
+    <EditForm
+      articleId={id}
+      title={data.article.title}
+      content={data.article.content}
+    />
+  );
+}
+
+function EditForm({
+  articleId,
+  title,
+  content,
+}: {
+  articleId: string;
+  title: string;
+  content: string;
+}) {
   const router = useRouter();
-  const [createArticle, { data, loading, error }] = useMutation<{
-    createArticle: IdType;
-  }>(CREATE_ARTICLE);
+
+  const [updateArticle, { data, loading, error }] = useMutation<{
+    updateArticle: IdType;
+  }>(EDIT_ARTICLE);
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
-    defaultValues: {
-      title: "",
-      content: "",
-    },
+    defaultValues: { title, content },
     mode: "onChange",
   });
 
   async function onSubmit({ title, content }: PostFormValues) {
-    const result = await createArticle({ variables: { title, content } });
-    if (result.data?.createArticle.id)
-      router.push(`/article/${result.data.createArticle.id}`);
+    const result = await updateArticle({
+      variables: { articleId, title, content },
+    });
+    console.log(result.data)
+    if (result.data?.updateArticle.id)
+      router.push(`/article/${result.data.updateArticle.id}`);
   }
 
   return (
@@ -83,11 +114,8 @@ export default function CreateArticlePage() {
         </Link>
         <div>
           <h1 className="text-4xl font-bold tracking-tight lg:text-5xl text-emerald-600">
-            Create New Article
+            Edit Article
           </h1>
-          <p className="text-lg text-muted-foreground mt-2">
-            Share your knowledge and experiences with the community.
-          </p>
         </div>
       </div>
 
@@ -127,21 +155,13 @@ export default function CreateArticlePage() {
                   </FormLabel>
                   <FormControl>
                     <MarkdownEditor
-                      placeholder={mdPlaceholder}
                       value={field.value}
                       onChange={(value, viewUpdate) => field.onChange(value)}
                       style={{ minHeight: "280px", maxHeight: "450px" }}
                       previewWidth="100%"
-                      renderPreview={() => {
-                        return field.value === "" ? (
-                          <MarkdownRenderer
-                            content={mdPlaceholder}
-                            className="opacity-50"
-                          />
-                        ) : (
-                          <MarkdownRenderer content={field.value} />
-                        );
-                      }}
+                      renderPreview={() => (
+                        <MarkdownRenderer content={field.value} />
+                      )}
                       enableScroll={false}
                     />
                   </FormControl>
@@ -163,7 +183,7 @@ export default function CreateArticlePage() {
                 className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer text-white"
                 disabled={!form.formState.isValid}
               >
-                Publish Article
+                Save Article
               </Button>
               <Button type="button" variant="outline" asChild>
                 <Link href="/">Cancel</Link>

@@ -5,8 +5,9 @@ import { ArticleCard } from "@/components/article-card";
 import { UserArticlesList, USER_LIST_ALL_ARTICLES } from "@/graphql/query";
 import { useQuery } from "@apollo/client/react";
 import { useUser } from "@/context/user-context";
-import { useRouter } from "next/navigation";
 import { ArticleSearch } from "@/components/article-search";
+import { Button, LinkButton } from "@/components/ui/button";
+import { Edit, Trash2 } from "lucide-react";
 
 export default function MyArticles() {
   const { user } = useUser();
@@ -36,7 +37,24 @@ export default function MyArticles() {
 
       <div className="space-y-6">
         {filteredArticles.map((article) => (
-          <ArticleCard {...article} key={article.id} />
+          <div className="flex w-full space-x-4" key={article.id}>
+            <ArticleCard {...article} />
+            <div className="w-12 space-y-4 my-auto">
+              <LinkButton
+                className="bg-amber-400"
+                title="Edit article"
+                href={`/article/${article.id}/edit`}
+              >
+                <Edit />
+              </LinkButton>
+              <Button
+                className="bg-red-400 cursor-pointer"
+                title="Delete article"
+              >
+                <Trash2 />
+              </Button>
+            </div>
+          </div>
         ))}
       </div>
     </div>

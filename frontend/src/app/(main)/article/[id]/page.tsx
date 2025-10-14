@@ -1,7 +1,6 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { getInitials, parseDate, timeSince } from "@/lib/utils";
@@ -10,65 +9,6 @@ import { UserShield } from "@/components/user-shield";
 import { useQuery } from "@apollo/client/react";
 import { Article, GET_ARTICLE } from "@/graphql/query";
 import { use } from "react";
-
-const _data = {
-  id: "1",
-  title: "Getting Started with TypeScript",
-  content: `# Introduction
-
-  TypeScript is a **typed superset** of JavaScript that compiles to plain JavaScript.  
-  It adds _static typing_, which helps developers catch errors earlier.
-
-  ## Example
-
-  Here’s a simple function in TypeScript:
-
-  \`\`\`ts
-  function greet(name: string): string {
-    return \`Hello, \${name}!\`;
-  }
-
-  console.log(greet("World"));
-  \`\`\`
-
-  ## Benefits
-
-  - Safer code
-  - Better tooling support (IntelliSense, autocompletion)
-  - Easier refactoring
-
-  > "JavaScript that scales." – TypeScript slogan
-  `,
-  tags: ["typescript", "javascript", "programming"],
-  author: {
-    id: "a1",
-    username: "devUser",
-    avatarUrl: "https://example.com/avatar1.png",
-  },
-  comments: [
-    {
-      id: "c1",
-      content: "Great article! Helped me a lot.",
-      createdAt: "2025-10-02T10:00:00.000Z",
-      author: {
-        id: "u2",
-        username: "reader123",
-        avatarUrl: "https://example.com/avatar2.png",
-      },
-    },
-    {
-      id: "c2",
-      content: "Thanks for sharing, I was struggling with types.",
-      createdAt: "2025-10-02T12:00:00.000Z",
-      author: {
-        id: "u3",
-        username: "techFan",
-        avatarUrl: "https://example.com/avatar3.png",
-      },
-    },
-  ],
-  createdAt: "2025-10-02T10:00:00.000Z",
-};
 
 export default function ArticlePage({
   params,
@@ -81,7 +21,7 @@ export default function ArticlePage({
     variables: { articleId: id },
   });
 
-  if (!data) return null
+  if (!data) return null;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -93,7 +33,10 @@ export default function ArticlePage({
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={data.article.author.avatarUrl} alt="author avatar" />
+              <AvatarImage
+                src={data.article.author.avatarUrl}
+                alt="author avatar"
+              />
               <AvatarFallback>
                 {getInitials(data.article.author.username)}
               </AvatarFallback>
@@ -104,7 +47,9 @@ export default function ArticlePage({
           </div>
           <div className="flex items-center gap-1">
             <Calendar className="h-4 w-4" />
-            <span>{parseDate(data.article.createdAt, "yyyy-MM-dd, HH:mm:ss")}</span>
+            <span>
+              {parseDate(data.article.createdAt, "yyyy-MM-dd, HH:mm:ss")}
+            </span>
           </div>
         </div>
 
