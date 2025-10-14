@@ -85,7 +85,11 @@ function EditForm({
 
   const [updateArticle, { data, loading, error }] = useMutation<{
     updateArticle: IdType;
-  }>(EDIT_ARTICLE);
+  }>(EDIT_ARTICLE, {
+    refetchQueries: [
+      { query: GET_ARTICLE, variables: { articleId: articleId } },
+    ],
+  });
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(postFormSchema),
@@ -97,7 +101,7 @@ function EditForm({
     const result = await updateArticle({
       variables: { articleId, title, content },
     });
-    console.log(result.data)
+    console.log(result.data);
     if (result.data?.updateArticle.id)
       router.push(`/article/${result.data.updateArticle.id}`);
   }
