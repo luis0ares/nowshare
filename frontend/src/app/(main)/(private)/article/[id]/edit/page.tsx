@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowLeft } from "lucide-react";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { EDIT_ARTICLE, IdType } from "@/graphql/mutations";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { use } from "react";
 import { Article, GET_ARTICLE } from "@/graphql/query";
 
@@ -58,11 +58,13 @@ export default function EditArticlePage({
 }) {
   const { id } = use(params);
 
-  const { data } = useQuery<{ article: Article }>(GET_ARTICLE, {
+  const { data, error } = useQuery<{ article: Article }>(GET_ARTICLE, {
     variables: { articleId: id },
   });
 
-  if (!data) return null;
+  if (error) notFound();
+  if (!data) return <></>
+  
   return (
     <EditForm
       articleId={id}

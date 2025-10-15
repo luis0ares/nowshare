@@ -6,6 +6,7 @@ import {
   UserArticlesList,
   USER_LIST_ALL_ARTICLES,
   GET_ARTICLE,
+  LIST_ALL_ARTICLES,
 } from "@/graphql/query";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { useUser } from "@/context/user-context";
@@ -85,6 +86,7 @@ function ArticleDelete({
       refetchQueries: [
         { query: GET_ARTICLE, variables: { articleId: articleId } },
         { query: USER_LIST_ALL_ARTICLES, variables: { authorId: authorId } },
+        { query: LIST_ALL_ARTICLES },
       ],
     }
   );
@@ -96,10 +98,7 @@ function ArticleDelete({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          className="bg-red-400 cursor-pointer"
-          title="Delete article"
-        >
+        <Button className="bg-red-400 cursor-pointer" title="Delete article">
           <Trash2 />
         </Button>
       </AlertDialogTrigger>

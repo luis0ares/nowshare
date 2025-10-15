@@ -18,11 +18,12 @@ export default function ArticlePage({
 }) {
   const { id } = use(params);
 
-  const { data } = useQuery<{ article: Article }>(GET_ARTICLE, {
+  const { data, error } = useQuery<{ article: Article }>(GET_ARTICLE, {
     variables: { articleId: id },
   });
 
-  if (!data) notFound();
+  if (error) notFound();
+  if (!data) return <></>
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
