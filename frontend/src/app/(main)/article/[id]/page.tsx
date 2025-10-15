@@ -9,6 +9,7 @@ import { UserShield } from "@/components/user-shield";
 import { useQuery } from "@apollo/client/react";
 import { Article, GET_ARTICLE } from "@/graphql/query";
 import { use } from "react";
+import { notFound } from "next/navigation";
 
 export default function ArticlePage({
   params,
@@ -21,7 +22,7 @@ export default function ArticlePage({
     variables: { articleId: id },
   });
 
-  if (!data) return null;
+  if (!data) notFound();
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">

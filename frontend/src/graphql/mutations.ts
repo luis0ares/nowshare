@@ -23,3 +23,9 @@ export const EDIT_ARTICLE = gql`
     }
   }
 `;
+
+export const DELETE_ARTICLE = gql`
+  mutation DeleteArticle($articleId: String!) {
+    deleteArticle(articleId: $articleId)
+  }
+`;
