@@ -29,3 +29,11 @@ export const DELETE_ARTICLE = gql`
     deleteArticle(articleId: $articleId)
   }
 `;
+
+export const POST_ARTICLE_COMMENT = gql`
+  mutation CreateComment($articleId: String!, $content: String!) {
+    createComment(articleId: $articleId, content: $content) {
+      id
+    }
+  }
+`;
