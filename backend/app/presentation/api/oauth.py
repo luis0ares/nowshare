@@ -39,20 +39,22 @@ async def github_oauth_callback(
     use_case = GithubCallbackUseCase(user_repository)
     tokens = await use_case.execute(code)
 
-    response = RedirectResponse(envs.LOGGED_REDIRECT)
+    response = RedirectResponse(f'{envs.LOGGED_REDIRECT}?status=success')
     response.set_cookie(
         key='__access',
-        value=tokens.access,
+        value=tokens.access.value,
+        max_age=tokens.access.max_age,
         httponly=True,
         secure=envs.C00KIES_SECURE,
         samesite='lax',
     )
     response.set_cookie(
         key='__refresh',
-        value=tokens.refresh,
+        value=tokens.refresh.value,
+        max_age=tokens.refresh.max_age,
         httponly=True,
         secure=envs.C00KIES_SECURE,
-        samesite='lax',
+        samesite='lax'
     )
     return response
 
@@ -65,17 +67,19 @@ def refresh_access_token(request: Request, response: Response):
 
     response.set_cookie(
         key='__access',
-        value=tokens.access,
+        value=tokens.access.value,
+        max_age=tokens.access.max_age,
         httponly=True,
         secure=envs.C00KIES_SECURE,
-        samesite='lax',
+        samesite='lax'
     )
     response.set_cookie(
         key='__refresh',
-        value=tokens.refresh,
+        value=tokens.refresh.value,
+        max_age=tokens.refresh.max_age,
         httponly=True,
         secure=envs.C00KIES_SECURE,
-        samesite='lax',
+        samesite='lax'
     )
     return Generic(detail='Tokens refreshed')
 
@@ -83,6 +87,6 @@ def refresh_access_token(request: Request, response: Response):
 @auth_router.get('/logout', response_model=Generic)
 def logout(response: Response):
     """Removes the **httponly** tokens."""
-    response.delete_cookie('__access')
-    response.delete_cookie('__refresh')
+    response.set_cookie('__access')
+    response.set_cookie('__refresh')
     return Generic(detail='Logged out')

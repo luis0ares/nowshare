@@ -27,11 +27,11 @@ This project is structured as a **monorepo**, containing both **backend** and **
 ### **Frontend**
 
 - [x] Project setup with Next.js 15 + Tailwind CSS
-- [ ] Basic UI for knowledge pages and categories
-- [ ] Implement **oauth flow with github**
-- [ ] Implement **pages for article crud**
-- [ ] Implement **components for article comment crud**
-- [ ] Integrate with backend API for data persistence
+- [x] Basic UI for knowledge pages
+- [x] Implement **oauth flow with github**
+- [x] Implement **pages for article crud**
+- [x] Implement **components for article comment crud**
+- [x] Integrate with backend API for data persistence
 
 ### **Backend**
 
@@ -90,3 +90,15 @@ poetry run task run
 - ✅ Alembic setup with first migration
 - ✅ REST API endpoints to handle github oauth, logout and token refresh
 - ✅ GraphQL queries and mutations for user, articles and comments
+
+### **v1.0.0 - Frontend Integration**
+
+- ✅ Apollo client (graphql) configured
+- ✅ Navbar and articles listing
+- ✅ Article inspect using tailwind prose to render article content formated in markdown
+- ✅ Theme toggle and code highlight for article content
+- ✅ Page to create articles using rich markdown editior with preview and fullscreen mode
+- ✅ Oauth flow with api implemented, custom hook to get user data stored in the context api, component to control interface rendering only when user is authenticated
+- ✅ Custom Apollo link to refresh access token and retry request when the access token expires (if the request fails again, the user session is terminated)
+- ✅ Page to list all articles owned by the current user and actions to edit the article and also delete
+- ✅ Articles comments implemented
