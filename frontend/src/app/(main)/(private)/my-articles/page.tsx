@@ -28,15 +28,16 @@ import {
 
 export default function MyArticles() {
   const { user } = useUser();
-  if (!user) return null;
 
   const [search, setSearch] = useState("");
   const { loading, data } = useQuery<{ articles: UserArticlesList }>(
     USER_LIST_ALL_ARTICLES,
     {
-      variables: { authorId: user.id },
+      variables: { authorId: user?.id },
     }
   );
+
+  if (!user) return null;
   if (loading || !data) return null;
 
   const filteredArticles = data.articles.filter((article) =>
@@ -80,16 +81,13 @@ function ArticleDelete({
   authorId: string;
   articleId: string;
 }) {
-  const [deleteArticle, { data, loading, error }] = useMutation(
-    DELETE_ARTICLE,
-    {
-      refetchQueries: [
-        { query: GET_ARTICLE, variables: { articleId: articleId } },
-        { query: USER_LIST_ALL_ARTICLES, variables: { authorId: authorId } },
-        { query: LIST_ALL_ARTICLES },
-      ],
-    }
-  );
+  const [deleteArticle] = useMutation(DELETE_ARTICLE, {
+    refetchQueries: [
+      { query: GET_ARTICLE, variables: { articleId: articleId } },
+      { query: USER_LIST_ALL_ARTICLES, variables: { authorId: authorId } },
+      { query: LIST_ALL_ARTICLES },
+    ],
+  });
 
   async function handleDelete() {
     await deleteArticle({ variables: { articleId } });

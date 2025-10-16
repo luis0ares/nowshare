@@ -63,8 +63,8 @@ export default function EditArticlePage({
   });
 
   if (error) notFound();
-  if (!data) return <></>
-  
+  if (!data) return <></>;
+
   return (
     <EditForm
       articleId={id}
@@ -85,7 +85,7 @@ function EditForm({
 }) {
   const router = useRouter();
 
-  const [updateArticle, { data, loading, error }] = useMutation<{
+  const [updateArticle] = useMutation<{
     updateArticle: IdType;
   }>(EDIT_ARTICLE, {
     refetchQueries: [

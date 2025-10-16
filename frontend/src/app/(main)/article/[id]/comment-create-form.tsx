@@ -10,7 +10,7 @@ import { useState } from "react";
 export function CommentCreateForm({ articleId }: { articleId: string }) {
   const [content, setContent] = useState<string>("");
 
-  const [createComment, { data, loading, error }] = useMutation<{
+  const [createComment] = useMutation<{
     createComment: IdType;
   }>(POST_ARTICLE_COMMENT, {
     refetchQueries: [

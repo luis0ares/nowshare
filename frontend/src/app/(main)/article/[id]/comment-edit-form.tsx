@@ -21,7 +21,7 @@ export function CommentEditForm({
 }) {
   const [content, setContent] = useState<string>(defaultContent);
 
-  const [updateComment, { data, loading, error }] = useMutation<{
+  const [updateComment] = useMutation<{
     updateComment: IdType;
   }>(EDIT_COMMENT, {
     refetchQueries: [

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useUser } from "@/context/user-context";
 import { redirect } from "next/navigation";
@@ -10,8 +10,7 @@ export default function PrivateLayout({
 }) {
   const { user } = useUser();
 
-  if (user == null)
-    redirect("/")
+  if (user == null) redirect("/");
 
   return <>{children}</>;
 }

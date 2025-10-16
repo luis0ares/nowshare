@@ -52,7 +52,7 @@ type PostFormValues = z.infer<typeof postFormSchema>;
 
 export default function CreateArticlePage() {
   const router = useRouter();
-  const [createArticle, { data, loading, error }] = useMutation<{
+  const [createArticle] = useMutation<{
     createArticle: IdType;
   }>(CREATE_ARTICLE);
 

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -13,7 +13,7 @@ export function MarkdownRenderer({
   content: string;
   className?: string;
 }) {
-  if (!content) return null
+  if (!content) return null;
 
   return (
     <div

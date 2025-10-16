@@ -9,7 +9,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,14 +34,11 @@ export function UserCommentActions({
 }) {
   const [open, setOpen] = useState(false);
 
-  const [deleteComment, { data, loading, error }] = useMutation(
-    DELETE_COMMENT,
-    {
-      refetchQueries: [
-        { query: GET_ARTICLE, variables: { articleId: articleId } },
-      ],
-    }
-  );
+  const [deleteComment] = useMutation(DELETE_COMMENT, {
+    refetchQueries: [
+      { query: GET_ARTICLE, variables: { articleId: articleId } },
+    ],
+  });
 
   async function handleDelete() {
     await deleteComment({ variables: { commentId } });
