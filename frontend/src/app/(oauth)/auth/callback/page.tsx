@@ -1,12 +1,13 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 
-export default function AuthCallbackPage() {
-  const searchParams = useSearchParams();
-
-  const status = searchParams.get("status") as "success" | "error" | null;
+export default function AuthCallbackPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: "success" | "error" }>;
+}) {
+  const { status } = use(searchParams);
 
   useEffect(() => {
     if (status === "success") {
