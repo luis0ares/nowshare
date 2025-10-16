@@ -91,4 +91,14 @@ poetry run task run
 - ✅ REST API endpoints to handle github oauth, logout and token refresh
 - ✅ GraphQL queries and mutations for user, articles and comments
 
-### **v0.2.0 - Frontend Integration**
+### **v1.0.0 - Frontend Integration**
+
+- ✅ Apollo client (graphql) configured
+- ✅ Navbar and articles listing
+- ✅ Article inspect using tailwind prose to render article content formated in markdown
+- ✅ Theme toggle and code highlight for article content
+- ✅ Page to create articles using rich markdown editior with preview and fullscreen mode
+- ✅ Oauth flow with api implemented, custom hook to get user data stored in the context api, component to control interface rendering only when user is authenticated
+- ✅ Custom Apollo link to refresh access token and retry request when the access token expires (if the request fails again, the user session is terminated)
+- ✅ Page to list all articles owned by the current user and actions to edit the article and also delete
+- ✅ Articles comments implemented
