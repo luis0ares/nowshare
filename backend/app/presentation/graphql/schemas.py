@@ -143,7 +143,7 @@ class Mutation:
         comment_repository = CommentRepository(info.context['db_session'])
         service = CommentService(comment_repository)
         return await service.create_comment(
-            author_id=int(article_id), content=content, article_id=user_data.id
+            article_id=int(article_id), content=content, author_id=user_data.id
         )
 
     @strawberry.mutation

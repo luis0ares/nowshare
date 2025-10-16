@@ -77,12 +77,12 @@ class CommentRepository:
             await self.session.commit()
             await self.session.refresh(db_comment)
             return CommentDTO(
-                id=comment.id,
-                content=comment.content,
-                author_id=comment.author_id,
-                article_id=comment.article_id,
-                created_at=comment.created_at,
-                updated_at=comment.updated_at,
+                id=db_comment.id,
+                content=db_comment.content,
+                author_id=db_comment.author_id,
+                article_id=db_comment.article_id,
+                created_at=db_comment.created_at,
+                updated_at=db_comment.updated_at,
             )
         except Exception as e:
             await self.session.rollback()
