@@ -37,3 +37,17 @@ export const POST_ARTICLE_COMMENT = gql`
     }
   }
 `;
+
+export const DELETE_COMMENT = gql`
+  mutation DeleteComment($commentId: String!) {
+    deleteComment(commentId: $commentId)
+  }
+`;
+
+export const EDIT_COMMENT = gql`
+  mutation UpdateComment($commentId: String!, $content: String!) {
+    updateComment(commentId: $commentId, content: $content) {
+      id
+    }
+  }
+`;

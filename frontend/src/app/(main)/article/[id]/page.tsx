@@ -1,18 +1,15 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import { getInitials, parseDate } from "@/lib/utils";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
-import { UserShield } from "@/components/user-shield";
-import { useMutation, useQuery } from "@apollo/client/react";
+import { useQuery } from "@apollo/client/react";
 import { Article, GET_ARTICLE } from "@/graphql/query";
-import { use, useState } from "react";
+import { use } from "react";
 import { notFound } from "next/navigation";
-import { IdType, POST_ARTICLE_COMMENT } from "@/graphql/mutations";
-import { ArticleComment, CommentType } from "./article-comment";
-import { CommentForm } from "./comment-form";
+import { ArticleComment } from "./article-comment";
+import { CommentCreateForm } from "./comment-create-form";
 
 export default function ArticlePage({
   params,
@@ -66,12 +63,18 @@ export default function ArticlePage({
               Comments ({data.article.comments.length})
             </h3>
 
-            <CommentForm articleId={data.article.id} />
+            <CommentCreateForm articleId={data.article.id} />
           </div>
 
           <div className="space-y-6">
             {data.article.comments.map((comment) => {
-              return <ArticleComment data={comment} key={comment.id} />;
+              return (
+                <ArticleComment
+                  articleId={data.article.id}
+                  data={comment}
+                  key={comment.id}
+                />
+              );
             })}
           </div>
         </div>

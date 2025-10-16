@@ -7,7 +7,7 @@ import { GET_ARTICLE } from "@/graphql/query";
 import { useMutation } from "@apollo/client/react";
 import { useState } from "react";
 
-export function CommentForm({ articleId }: { articleId: string }) {
+export function CommentCreateForm({ articleId }: { articleId: string }) {
   const [content, setContent] = useState<string>("");
 
   const [createComment, { data, loading, error }] = useMutation<{
@@ -50,7 +50,7 @@ export function CommentForm({ articleId }: { articleId: string }) {
               Be respectful and constructive in your comments
             </p>
             <Button
-              className="bg-emerald-600 hover:bg-emerald-700"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
               onClick={handleArticleComment}
             >
               Submit comment

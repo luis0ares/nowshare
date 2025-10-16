@@ -1,8 +1,11 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getInitials, timeSince } from "@/lib/utils";
-import { EllipsisVertical } from "lucide-react";
 import { UserCommentActions } from "./comment-user-actions";
 import { UserShield } from "@/components/user-shield";
+import { useState } from "react";
+import { CommentEditForm } from "./comment-edit-form";
 
 export type CommentType = {
   id: string;
@@ -15,7 +18,15 @@ export type CommentType = {
   };
 };
 
-export function ArticleComment({ data }: { data: CommentType }) {
+export function ArticleComment({
+  articleId,
+  data,
+}: {
+  articleId: string;
+  data: CommentType;
+}) {
+  const [isEditFormVisible, setEditFormVisibility] = useState(false);
+
   return (
     <div className="flex gap-4" key={data.id}>
       <Avatar className="h-10 w-10 flex-shrink-0">
@@ -34,10 +45,24 @@ export function ArticleComment({ data }: { data: CommentType }) {
             </span>
           </div>
           <UserShield>
-            <UserCommentActions commentId={data.id} />
+            <UserCommentActions
+              articleId={articleId}
+              commentId={data.id}
+              onEdit={() => setEditFormVisibility(true)}
+            />
           </UserShield>
         </div>
-        <p className="text-gray-700 dark:text-gray-300">{data.content}</p>
+        {isEditFormVisible ? (
+          <CommentEditForm
+            articleId={articleId}
+            commentId={data.id}
+            defaultContent={data.content}
+            onCancel={() => setEditFormVisibility(false)}
+            onSave={() => setEditFormVisibility(false)}
+          />
+        ) : (
+          <p className="text-gray-700 dark:text-gray-300">{data.content}</p>
+        )}
       </div>
     </div>
   );
