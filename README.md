@@ -27,11 +27,11 @@ This project is structured as a **monorepo**, containing both **backend** and **
 ### **Frontend**
 
 - [x] Project setup with Next.js 15 + Tailwind CSS
-- [ ] Basic UI for knowledge pages and categories
-- [ ] Implement **oauth flow with github**
-- [ ] Implement **pages for article crud**
-- [ ] Implement **components for article comment crud**
-- [ ] Integrate with backend API for data persistence
+- [x] Basic UI for knowledge pages
+- [x] Implement **oauth flow with github**
+- [x] Implement **pages for article crud**
+- [x] Implement **components for article comment crud**
+- [x] Integrate with backend API for data persistence
 
 ### **Backend**
 
