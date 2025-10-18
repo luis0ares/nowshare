@@ -13,9 +13,9 @@ import {
 import { LogOut, FileText, PenTool, Github } from "lucide-react";
 import { getInitials } from "@/lib/utils";
 import { ThemeToggle } from "./theme-toggle";
-import { OauthLoginButton } from "./oauth-button";
 import { useUser } from "@/context/user-context";
 import { UserShield } from "./user-shield";
+import { LinkButton } from "./ui/button";
 
 function UserProfile() {
   const { logout, user } = useUser();
@@ -81,10 +81,15 @@ export function Navbar() {
             <ThemeToggle />
             <UserShield
               fallback={
-                <OauthLoginButton path="/auth/github/login">
+                <LinkButton
+                  href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/github/login?state=/my-articles`}
+                  variant="outline"
+                  className="bg-transparent text-base cursor-pointer"
+                  size="lg"
+                >
                   <Github className="mr-2 w-9 h-9" />
                   Sign In with GitHub
-                </OauthLoginButton>
+                </LinkButton>
               }
             >
               <UserProfile />

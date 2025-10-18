@@ -1,16 +1,21 @@
-"use client";
-
-import { useUser } from "@/context/user-context";
+// app/(private)/layout.tsx
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default function PrivateLayout({
+export default async function PrivateLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = useUser();
+  // Read cookies on the server
+  const cookieStore = await cookies();
+  const token = cookieStore.get("__refresh")?.value;
 
-  if (user == null) redirect("/");
+  // If no token, redirect to homepage
+  if (!token) {
+    redirect("/");
+  }
 
+  // Otherwise, allow rendering
   return <>{children}</>;
 }

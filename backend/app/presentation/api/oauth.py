@@ -12,7 +12,7 @@ auth_router = APIRouter(prefix='/auth', tags=['OAuth'])
 
 
 @auth_router.get('/github/login')
-async def github_oauth_redirect():
+async def github_oauth_redirect(state: str = ""):
     """
     Redirects the user to the GitHub login page, initiating the OAuth
     authentication flow.
@@ -21,13 +21,14 @@ async def github_oauth_redirect():
         'https://github.com/login/oauth/authorize?scope=user:email&'
         + f'client_id={envs.GITHUB_CLIENT_ID}&'
         + f'redirect_uri={envs.GITHUB_REDIRECT_URI}'
+        + f'&state={state}'
     )
     return RedirectResponse(URL)
 
 
 @auth_router.get('/github/callback')
 async def github_oauth_callback(
-    response: Response, code: str, db_session: DbSession
+    response: Response, db_session: DbSession, code: str, state: str = ""
 ):
     """
     GitHub OAuth callback route. Processes the received authorization
@@ -39,7 +40,7 @@ async def github_oauth_callback(
     use_case = GithubCallbackUseCase(user_repository)
     tokens = await use_case.execute(code)
 
-    response = RedirectResponse(f'{envs.LOGGED_REDIRECT}?status=success')
+    response = RedirectResponse(f'{envs.LOGGED_REDIRECT}?state={state}')
     response.set_cookie(
         key='__access',
         value=tokens.access.value,
