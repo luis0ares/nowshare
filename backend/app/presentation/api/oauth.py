@@ -88,6 +88,6 @@ def refresh_access_token(request: Request, response: Response):
 @auth_router.get('/logout', response_model=Generic)
 def logout(response: Response):
     """Removes the **httponly** tokens."""
-    response.set_cookie('__access')
-    response.set_cookie('__refresh')
+    response.delete_cookie('__access')
+    response.delete_cookie('__refresh')
     return Generic(detail='Logged out')
