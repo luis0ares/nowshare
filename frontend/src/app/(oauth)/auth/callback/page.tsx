@@ -1,27 +1,14 @@
-"use client";
+// import { useUser } from "@/context/user-context";
+import { redirect } from "next/navigation";
 
-import { use, useEffect } from "react";
-
-export default function AuthCallbackPage({
+export default async function AuthCallbackPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: "success" | "error" }>;
+  searchParams: Promise<{ state: string }>;
 }) {
-  const { status } = use(searchParams);
+  const { state } = await searchParams;
+  // const { refetchUser } = useUser();
 
-  useEffect(() => {
-    if (status === "success") {
-      window.opener?.postMessage(
-        { type: "OAUTH_SUCCESS" },
-        window.location.origin
-      );
-    } else if (status === "error") {
-      window.opener?.postMessage(
-        { type: "OAUTH_ERROR" },
-        window.location.origin
-      );
-    }
-  }, [status]);
-
-  return <div></div>;
+  if (state) redirect(state);
+  else redirect("/");
 }
