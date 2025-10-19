@@ -19,7 +19,6 @@ export function CommentCreateForm({ articleId }: { articleId: string }) {
   });
 
   async function handleArticleComment() {
-    console.log(articleId);
     if (content.trim()) {
       const { data } = await createComment({
         variables: {

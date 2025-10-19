@@ -1,4 +1,3 @@
-// import { useUser } from "@/context/user-context";
 import { redirect } from "next/navigation";
 
 export default async function AuthCallbackPage({
@@ -7,7 +6,7 @@ export default async function AuthCallbackPage({
   searchParams: Promise<{ state: string }>;
 }) {
   const { state } = await searchParams;
-  // const { refetchUser } = useUser();
+  console.log("OAuth callback state:", state);
 
   if (state) redirect(state);
   else redirect("/");

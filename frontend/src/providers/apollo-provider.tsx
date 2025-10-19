@@ -12,7 +12,6 @@ import { ApolloProvider as Provider } from "@apollo/client/react";
 import { TokenAutoRefresh } from "@/lib/auth-link";
 
 const onError = async (error: GraphQLFormattedError) => {
-  console.log("First attempt failed:", error);
   const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "/auth/refresh", {
     credentials: "include",
   });
