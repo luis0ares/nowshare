@@ -30,7 +30,6 @@ export function CommentEditForm({
   });
 
   async function handleArticleComment() {
-    console.log(articleId);
     if (content.trim()) {
       const { data } = await updateComment({
         variables: {

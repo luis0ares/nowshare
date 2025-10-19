@@ -103,7 +103,6 @@ function EditForm({
     const result = await updateArticle({
       variables: { articleId, title, content },
     });
-    console.log(result.data);
     if (result.data?.updateArticle.id)
       router.push(`/article/${result.data.updateArticle.id}`);
   }

@@ -83,8 +83,8 @@ export function Navbar() {
               fallback={
                 <LinkButton
                   href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/github/login?state=/my-articles`}
+                  prefetch={false}
                   variant="outline"
-                  className="bg-transparent text-base cursor-pointer"
                   size="lg"
                 >
                   <Github className="mr-2 w-9 h-9" />

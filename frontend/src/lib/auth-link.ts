@@ -22,7 +22,7 @@ export function TokenAutoRefresh(
           const sub = forward(operation).subscribe({
             next: async (result) => {
               const gqlErrors = result.errors;
-              console.log(gqlErrors);
+              // console.log(gqlErrors);
 
               if (!retried && gqlErrors && gqlErrors.length > 0) {
                 const firstError = gqlErrors[0];

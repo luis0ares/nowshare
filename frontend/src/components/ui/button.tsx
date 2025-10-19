@@ -61,12 +61,15 @@ function LinkButton({
   variant,
   size,
   href,
+  prefetch = "auto",
   ...props
-}: React.AnchorHTMLAttributes<HTMLAnchorElement> &
-  VariantProps<typeof buttonVariants>) {
+}: React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+  prefetch?: boolean | "auto" | "unstable_forceStale" | null | undefined;
+} & VariantProps<typeof buttonVariants>) {
   return (
     <Link
       href={href ?? "#"}
+      prefetch={prefetch}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
