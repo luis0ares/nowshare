@@ -19,7 +19,7 @@ export function ArticleSearch(props: {
           onChange={(e) => props.onChange(e.target.value)}
         />
         <UserShield>
-          <LinkButton href="/create-article">
+          <LinkButton href="/create-article" prefetch={false}>
             <Plus />
             Create New Article
           </LinkButton>

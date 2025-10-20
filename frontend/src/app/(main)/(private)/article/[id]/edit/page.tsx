@@ -23,6 +23,8 @@ import { EDIT_ARTICLE, IdType } from "@/graphql/mutations";
 import { notFound, useRouter } from "next/navigation";
 import { use } from "react";
 import { Article, GET_ARTICLE } from "@/graphql/query";
+import "@uiw/react-markdown-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),

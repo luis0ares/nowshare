@@ -62,6 +62,7 @@ export default function MyArticles() {
                 className="bg-amber-400"
                 title="Edit article"
                 href={`/article/${article.id}/edit`}
+                prefetch={false}
               >
                 <Edit />
               </LinkButton>
