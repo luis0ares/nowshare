@@ -22,6 +22,8 @@ import { ArrowLeft } from "lucide-react";
 import { useMutation } from "@apollo/client/react";
 import { CREATE_ARTICLE, IdType } from "@/graphql/mutations";
 import { useRouter } from "next/navigation";
+import "@uiw/react-markdown-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
 
 const MarkdownEditor = dynamic(
   () => import("@uiw/react-markdown-editor").then((mod) => mod.default),
