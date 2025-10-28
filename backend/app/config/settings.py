@@ -1,8 +1,22 @@
 from typing import List, Literal
 
+from pydantic import PostgresDsn, UrlConstraints
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 EnvType = Literal['PROD', 'DEV', 'TEST']
+
+
+class AsyncpgDsn(PostgresDsn):
+    _constraints = UrlConstraints(
+        host_required=True,
+        allowed_schemes=[
+            'postgresql+asyncpg',
+        ],
+    )
+
+    def to_sync(self) -> str:
+        return self.__str__().replace(
+            'postgresql+asyncpg', 'postgresql')
 
 
 class Settings(BaseSettings):
@@ -26,7 +40,7 @@ class Settings(BaseSettings):
     CORS_HEADERS: List[str] = ['*']
     CORS_METHODS: List[str] = ['*']
 
-    DATABASE_URL: str
+    DATABASE_URL: AsyncpgDsn
     DATABASE_ECHO: bool = False
 
     JWT_ALGORITHM: str = 'HS256'
@@ -41,4 +55,4 @@ class Settings(BaseSettings):
     C00KIES_SECURE: bool = False
 
 
-envs = Settings()
+envs: Settings = Settings()

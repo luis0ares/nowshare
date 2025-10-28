@@ -1,11 +1,27 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from taskiq_fastapi import init as taskiq_fastapi_init
 
+from app.broker import broker
 from app.config.middleware import register_middleware
 from app.config.settings import envs
 from app.presentation.api.oauth import auth_router
 from app.presentation.graphql.schemas import graphql_app
 from app.presentation.handlers import register_handlers
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if not broker.is_worker_process:
+        await broker.startup()
+    taskiq_fastapi_init(broker, "app.main:app")
+
+    yield
+
+    if not broker.is_worker_process:
+        await broker.shutdown()
+
 
 app = FastAPI(
     title='NowShare API',
@@ -13,12 +29,13 @@ app = FastAPI(
     version='0.1.0',
     contact={
         'name': 'Luis Eduardo Soares',
-        'url': 'https://www.linkedin.com/in/luis0ares',
+        'url': 'https:www,.luis0ares',
         'email': 'luisedu.soares@outlook.com',
     },
     docs_url=None,
     redoc_url='/docs',
     root_path=envs.API_PREFIX,
+    lifespan=lifespan,
 )
 
 
