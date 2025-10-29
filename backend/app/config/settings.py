@@ -1,5 +1,6 @@
 from typing import List, Literal
 
+from openai.types import ChatModel
 from pydantic import PostgresDsn, UrlConstraints
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -53,6 +54,9 @@ class Settings(BaseSettings):
     GITHUB_REDIRECT_URI: str
     LOGGED_REDIRECT: str = '/'
     C00KIES_SECURE: bool = False
+
+    OPENAI_API_KEY: str
+    OPENAI_GPT_MODEL: ChatModel = 'gpt-4o-mini'
 
 
 envs: Settings = Settings()
