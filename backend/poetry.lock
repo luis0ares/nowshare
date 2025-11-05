@@ -2464,14 +2464,18 @@ description = "AsyncPG and PostgreSQL integration for taskiq"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
-files = [
-    {file = "taskiq_pg-0.2.0-py3-none-any.whl", hash = "sha256:14fa3d38a21c07e21594d4e47b1bc40103e5f96c7c6f349d9b30cd929139ca5b"},
-    {file = "taskiq_pg-0.2.0.tar.gz", hash = "sha256:8106d089278c31660b9e8372bdb165354f2bb711595861b5bb3211ff0fd8401c"},
-]
+files = []
+develop = false
 
 [package.dependencies]
 asyncpg = ">=0.30.0"
 taskiq = ">=0.11.10"
+
+[package.source]
+type = "git"
+url = "https://github.com/luis0ares/taskiq-pg.git"
+reference = "bugfix/worker-concurrency"
+resolved_reference = "ccd22637f9a1ba7a8a5b3ba7de65a78208967071"
 
 [[package]]
 name = "testcontainers"
@@ -3185,4 +3189,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "9a10b733f04a160eb462d37a58b3b3c4797ffcdb4cdb5f0d6b1771690dae65a5"
+content-hash = "55a48b4a857fd852e0b877f0b15e932b01756769572ae7c84cd0daaebd85dd50"
